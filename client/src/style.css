@@ -1,0 +1,16 @@
+.flex {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.form-control {
+  border-top: none;
+  border-right: none;
+  border-left: none;
+  border-radius: none;
+  border-width: 2px;
+}
+.form-control:focus {
+  outline: none;
+  box-shadow: none;
+}
