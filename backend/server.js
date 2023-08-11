@@ -6,9 +6,10 @@ const dotenv = require("dotenv").config();
 const morgan = require("morgan");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-
 const DatabaseConnection = require("./database/databaseconnection");
-
+// import routes...
+const AuthRoute = require("./routes/auth");
+const user = require("./routes/user");
 // import the Database connection function and run;
 DatabaseConnection();
 // middlewares
@@ -16,11 +17,10 @@ app.use(bodyParser.urlencoded({ extended: true })); // enabling the bodyparser t
 app.use(bodyParser.json({ limit: "5mb" })); // increase the size if data is bigger.
 app.use(morgan("tiny")); // printing the url or in the console or request.
 app.use(cors());
+// using Routes with middleware..
+app.use("/api", AuthRoute); // means AuthRoute will access only if we go to by /api first.this middleware does
+app.use("/user", user); //access only first you got user/then .
 
-// routes
-app.get("/api", (req, res) => {
-  res.send("hello world");
-});
 // define the port first
 const Port = process.env.PORT || 5000;
 app.listen(Port, () => {
