@@ -14,7 +14,7 @@ import { loggedInUser } from "../../Redux/reducers/userReducers";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { useSelector } from "react-redux";
-
+import axios from "axios";
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -50,7 +50,28 @@ const Login = () => {
         // destructing the user from the result.
         const { user } = result;
         const Idtokoen = await getIdTokenResult(user); // this will give the token of logged in uder
+        // sending the token to backend to the particlar route to verfiy the token by backend.. once veryfied means user is valid..
+
         //send the details to redux
+        const config = {
+          headers: {
+            "Content-type": "application/json",
+            token: Idtokoen.token,
+          },
+        };
+        // if we want to change the route based on apio simply change it no need to change entire
+        axios
+          .post(
+            `${process.env.REACT_APP_ROUTE_API}/create-or-update`,
+            {}, // 2nd one is passed in the body
+            config // 3rd one is passed in the headers
+          )
+          .then((data) => {
+            console.log("The response is sucessfull and the data is ", data);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
 
         dispatch(
           loggedInUser({
