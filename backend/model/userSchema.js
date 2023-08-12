@@ -3,8 +3,8 @@
 
 const mongoose = require("mongoose");
 
-// creating the user Schema
-const userSchema = new mongoose.model(
+// Creating the user Schema
+const userSchema = new mongoose.Schema(
   {
     name: String,
     email: {
@@ -21,12 +21,10 @@ const userSchema = new mongoose.model(
       default: [],
     },
     address: String,
-    wishlist: {
-      // type:{type:mongoose.Schema.ObjectId,ref:"Product"}
-    },
+    wishlist: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],
   },
-  { timestamps: true }
+  { timestamps: true } // Enable timestamps for createdAt and updatedAt
 );
-//need to create documents..
-module.exports = mongoose.model("User", userSchema);
-// it creates a USer documents with the userSchema collections.
+
+const User = mongoose.model("User", userSchema);
+module.exports = User;

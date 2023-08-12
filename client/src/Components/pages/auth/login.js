@@ -68,17 +68,21 @@ const Login = () => {
           )
           .then((data) => {
             console.log("The response is sucessfull and the data is ", data);
+
+            // the data coming from post request simply dispatching into the redux store. that can be accesss any where
+            dispatch(
+              loggedInUser({
+                name: data.data.name,
+                email: data.data.email,
+                role: data.data.role,
+                _id: data.data._id,
+                token: Idtokoen.token,
+              })
+            );
           })
           .catch((error) => {
             console.log(error);
           });
-
-        dispatch(
-          loggedInUser({
-            email: user.email,
-            token: Idtokoen.token,
-          })
-        );
 
         // navigate to home page
         navigate("/");
@@ -96,13 +100,36 @@ const Login = () => {
       const { user } = userConfim;
       // get the token of the user and dispatch into the redux..
       const IdToken = await getIdTokenResult(user);
-      console.log(IdToken);
-      dispatch(
-        loggedInUser({
-          email: user.email,
-          toekn: IdToken,
+      // if we want to change the route based on apio simply change it no need to change entire
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+          token: IdToken.token,
+        },
+      };
+      axios
+        .post(
+          `${process.env.REACT_APP_ROUTE_API}/create-or-update`,
+          {}, // 2nd one is passed in the body
+          config // 3rd one is passed in the headers
+        )
+        .then((data) => {
+          console.log("The response is sucessfull and the data is ", data);
+          // the data coming from post request simply dispatching into the redux store. that can be accesss any where
+          dispatch(
+            loggedInUser({
+              name: data.data.name,
+              email: data.data.email,
+              role: data.data.role,
+              _id: data.data._id,
+              toekn: IdToken.token,
+            })
+          );
         })
-      );
+        .catch((error) => {
+          console.log(error);
+        });
+
       navigate("/");
     } catch (error) {
       console.log(error);

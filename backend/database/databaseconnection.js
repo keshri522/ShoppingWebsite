@@ -4,7 +4,7 @@ const dotenv = require("dotenv").config();
 // creating database connection .
 const DatabaseConnection = async () => {
   try {
-    const DataBaseUri = `mongodb+srv://rkeshri522:${process.env.password}@cluster0.pmobmox.mongodb.net/?retryWrites=true&w=majority`;
+    const DataBaseUri = `mongodb+srv://rkeshri522:${process.env.password}@cluster0.pmobmox.mongodb.net/EcommerceDb?retryWrites=true&w=majority`;
     const connect = await mongoose.connect(DataBaseUri, {
       UseNewUrlParser: true,
       useUnifiedTopology: true,

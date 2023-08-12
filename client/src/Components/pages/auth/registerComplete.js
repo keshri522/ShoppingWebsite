@@ -6,7 +6,11 @@ import "../../../style.css";
 import { useNavigate } from "react-router-dom";
 import { MailOutlined } from "@ant-design/icons";
 import { Button } from "antd";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { loggedInUser } from "../../Redux/reducers/userReducers";
 const RegisterComplete = () => {
+  const dispatch = useDispatch();
   const [email, setEmail] = useState(""); // this is for email.
   const [password, setPassword] = useState(""); // this is for the password field.
   let passwordRegex =
@@ -44,10 +48,40 @@ const RegisterComplete = () => {
         // need to update the password..
         await updatePassword(user, password); // saving the password
         setPassword("");
-        Navigate("/");
-
         const IdToken = await user.getIdToken(); // this will give the unique id for each user
         // no i have to store this unique id to global state of the application that is rdux when ever i need to access the current user i simply use the id.
+        const config = {
+          headers: {
+            "Content-type": "application/json",
+            token: IdToken,
+          },
+        };
+        // if we want to change the route based on apio simply change it no need to change entire
+        axios
+          .post(
+            `${process.env.REACT_APP_ROUTE_API}/create-or-update`,
+            {}, // 2nd one is passed in the body
+            config // 3rd one is passed in the headers
+          )
+          .then((data) => {
+            // console.log("The response is sucessfull and the data is ", data);
+
+            // the data coming from post request simply dispatching into the redux store. that can be accesss any where
+            dispatch(
+              loggedInUser({
+                name: data.data.name,
+                email: data.data.email,
+                role: data.data.role,
+                _id: data.data._id,
+                token: IdToken,
+              })
+            );
+            // navigate to home home..
+            Navigate("/");
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       }
     } catch (error) {
       toast.error("Something wrong,please try after sometime");
