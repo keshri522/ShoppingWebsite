@@ -5,6 +5,8 @@ import Home from "./pages/auth/home";
 import Login from "./pages/auth/login";
 import RegisterComplete from "./pages/auth/registerComplete";
 import ForgotPassword from "./pages/auth/forgotpassword";
+import UserDashBoard from "./pages/auth/userDashboard";
+
 const Router = () => {
   return (
     <div>
@@ -19,6 +21,10 @@ const Router = () => {
         <Route
           path="/forgot/password"
           element={<ForgotPassword></ForgotPassword>}
+        ></Route>
+        <Route
+          path="user/dashboard"
+          element={<UserDashBoard></UserDashBoard>}
         ></Route>
       </Routes>
     </div>
