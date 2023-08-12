@@ -24,7 +24,17 @@ const Login = () => {
   // get the user or token of current user check if user and token are there we need to navigate the user to homepage.
   // this will prevent user to go to manually forgot/password page if he is already loggin..
   let user = useSelector((state) => state.rootreducer.user); // this will give current user toekn
+  // role based login
+  const roleBasedRedirect = (data) => {
+    console.log(data.data.role);
+    if (data.data.role === "admin") {
+      navigate("/admin/dashboard");
+    } else {
+      navigate("/user/dashboard");
+    }
+  };
   // this will run when we refresh or mount the page.
+
   useEffect(() => {
     if (user && user.token) {
       navigate("/");
@@ -79,6 +89,8 @@ const Login = () => {
                 token: Idtokoen.token,
               })
             );
+            // navigae based on the role
+            roleBasedRedirect(data);
           })
           .catch((error) => {
             console.log(error);
@@ -114,7 +126,7 @@ const Login = () => {
           config // 3rd one is passed in the headers
         )
         .then((data) => {
-          console.log("The response is sucessfull and the data is ", data);
+          // console.log("The response is sucessfull and the data is ", data);
           // the data coming from post request simply dispatching into the redux store. that can be accesss any where
           dispatch(
             loggedInUser({
@@ -125,12 +137,13 @@ const Login = () => {
               toekn: IdToken.token,
             })
           );
+          // navigate("/");
+          // we redriceted the user based on the role if he is admin to redirect othere route otherwise if he is subscriber then redirects to other routes
+          roleBasedRedirect(data);
         })
         .catch((error) => {
           console.log(error);
         });
-
-      navigate("/");
     } catch (error) {
       console.log(error);
     }

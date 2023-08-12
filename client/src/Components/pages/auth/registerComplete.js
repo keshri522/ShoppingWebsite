@@ -22,7 +22,16 @@ const RegisterComplete = () => {
     // need to grap the user email from the local storage
     setEmail(window.localStorage.getItem("emailForRegistration")); // set the value to email
   }, [email]);
-  const Navigate = useNavigate();
+  const navigate = useNavigate();
+  // role based login based on the role if user then other route if admin then other routes
+  const roleBasedRedirect = (data) => {
+    console.log(data.data.role);
+    if (data.data.role === "admin") {
+      navigate("/admin/dashboard");
+    } else {
+      navigate("/user/dashboard");
+    }
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -77,7 +86,7 @@ const RegisterComplete = () => {
               })
             );
             // navigate to home home..
-            Navigate("/");
+            roleBasedRedirect(data);
           })
           .catch((error) => {
             console.log(error);
