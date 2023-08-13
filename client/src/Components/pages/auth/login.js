@@ -26,7 +26,6 @@ const Login = () => {
   let user = useSelector((state) => state.rootreducer.user); // this will give current user toekn
   // role based login
   const roleBasedRedirect = (data) => {
-    console.log(data.data.role);
     if (data.data.role === "admin") {
       navigate("/admin/dashboard");
     } else {

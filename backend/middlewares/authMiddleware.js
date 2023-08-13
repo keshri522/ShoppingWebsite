@@ -18,7 +18,7 @@ const authMiddleware = async (req, res, next) => {
 // create admin middleware check if the role===admin then only pass
 const adminMiddleware = async (req, res, next) => {
   try {
-    const { email } = res.user; // destruting from auth middleware.
+    const { email } = req.user; // destruting from auth middleware.
     const adminUser = await User.findOne({ email });
     if (adminUser.role === "admin") {
       // res.status(200).json(adminUser);

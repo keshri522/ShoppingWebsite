@@ -14,10 +14,9 @@ const AdminDashBoard = () => {
 
   // using useeffect..
   useEffect(() => {
+    setstate(false);
     if (user && user.token) {
-      setstate(false);
       console.log(state);
-      // make a post request verfiy the token and also verify the role==admin in the backend or not.
       const config = {
         headers: {
           "Content-type": "application/json",
@@ -33,6 +32,7 @@ const AdminDashBoard = () => {
         .then((data) => {
           console.log("Admin data response is", data);
           setstate(false);
+          console.log(state);
         })
         .catch((error) => {
           console.log("Admin route error", error);
@@ -42,19 +42,21 @@ const AdminDashBoard = () => {
     // what if the user or user.token is not presnet in the redux means try to acces the route before admin login..
     else {
       setstate(true);
-      //   console.log(state);
+
       let interval = setInterval(() => {
         Setcount((count) => --count);
       }, 1000);
 
       if (count === 0) {
         navigate("/");
-        setstate(false);
       }
+
+      console.log(state);
 
       // Clear the interval
       return () => {
         clearInterval(interval);
+        setstate("");
       };
     }
   }, [user, count, navigate, state]);

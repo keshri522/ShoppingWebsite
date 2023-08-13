@@ -10,6 +10,7 @@ const DatabaseConnection = require("./database/databaseconnection");
 // import routes...
 const AuthRoute = require("./routes/auth");
 const user = require("./routes/user");
+const Category = require("./routes/catergory");
 // import the Database connection function and run;
 DatabaseConnection();
 // middlewares
@@ -20,7 +21,7 @@ app.use(cors());
 // using Routes with middleware..
 app.use("/api", AuthRoute); // means AuthRoute will access only if we go to by /api first.this middleware does
 app.use("/user", user); //access only first you got user/then .
-
+app.use("/route", Category); // access by Category routes
 // define the port first
 const Port = process.env.PORT || 5000;
 app.listen(Port, () => {
