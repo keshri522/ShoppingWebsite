@@ -1,5 +1,5 @@
 const admin = require("../firbase/index"); // import admin from firebase to verify the token in backend
-
+const User = require("../model/userSchema");
 // create a functino which will verify token and act as a middle ware..
 const authMiddleware = async (req, res, next) => {
   try {
@@ -15,4 +15,19 @@ const authMiddleware = async (req, res, next) => {
     });
   }
 };
-module.exports = authMiddleware;
+// create admin middleware check if the role===admin then only pass
+const adminMiddleware = async (req, res, next) => {
+  try {
+    const { email } = res.user; // destruting from auth middleware.
+    const adminUser = await User.findOne({ email });
+    if (adminUser.role === "admin") {
+      // res.status(200).json(adminUser);
+      next(); // next middleware
+    } else {
+      res.status(403).json("Admin access, admin denied");
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+module.exports = { authMiddleware, adminMiddleware };

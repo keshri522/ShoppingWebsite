@@ -2,11 +2,12 @@ const User = require("../model/userSchema");
 const Auth = async (req, res) => {
   try {
     // destructing the name email and picture from thereq.user..
-    const { name, email, picture } = req.user;
+    const { name, email, picture, role } = req.user;
     // now check if the user is already present in the mongo db or not if present then update the name and pic .
     const user = await User.findOneAndUpdate(
       { email: email },
       { name: email.slice(0, 10), picture: picture },
+      { role: role },
       { new: true }
     );
     // new:true mean it will always return the updated data..
@@ -19,6 +20,7 @@ const Auth = async (req, res) => {
         email: email,
         name: email.slice(0, 10),
         picture: picture,
+        role: role,
       });
       // need to save..
       user.save();

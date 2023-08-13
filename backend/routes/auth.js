@@ -4,8 +4,12 @@ const router = express.Router(); // this is the common router no need to use app
 //   conrollers
 const { Auth, CurrentUser } = require("../controllers/auth"); // import the Auth confunction from the repo.
 // niddlewares.
-const authMiddleware = require("../middlewares/authMiddleware"); // middlewares
+const {
+  adminMiddleware,
+  authMiddleware,
+} = require("../middlewares/authMiddleware"); // middlewares
 // routes
 router.post("/create-or-update", authMiddleware, Auth);
 router.post("/currentUser", authMiddleware, CurrentUser);
+router.post("/currentadmin", authMiddleware, adminMiddleware, CurrentUser);
 module.exports = router;

@@ -6,7 +6,8 @@ import Login from "./pages/auth/login";
 import RegisterComplete from "./pages/auth/registerComplete";
 import ForgotPassword from "./pages/auth/forgotpassword";
 import UserDashBoard from "./pages/auth/userDashboard";
-
+import Password from "./LoginUser/password";
+import AdminDashBoard from "./pages/auth/adminDashboard";
 const Router = () => {
   return (
     <div>
@@ -26,6 +27,12 @@ const Router = () => {
           path="user/dashboard"
           element={<UserDashBoard></UserDashBoard>}
         ></Route>
+
+        <Route
+          path="admin/dashboard"
+          element={<AdminDashBoard></AdminDashBoard>}
+        ></Route>
+        <Route path="user/password" element={<Password></Password>}></Route>
       </Routes>
     </div>
   );
