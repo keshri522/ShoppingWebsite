@@ -5,18 +5,18 @@ const UserSidebar = () => {
     <nav>
       <ul className="nav flex-column">
         <li className="nav-item">
-          <Link to="/user/history" className="nav-link">
+          <Link to="/user/history" className="nav-link text-secondary">
             History
           </Link>
         </li>
 
         <li className="nav-item">
-          <Link to="/user/password" className="nav-link">
+          <Link to="/user/password" className="nav-link text-secondary">
             Password
           </Link>
         </li>
         <li className="nav-item">
-          <Link to="/user/wishlist" className="nav-link">
+          <Link to="/user/wishlist" className="nav-link text-secondary">
             Wishlist
           </Link>
         </li>

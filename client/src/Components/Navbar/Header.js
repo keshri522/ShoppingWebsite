@@ -32,6 +32,7 @@ const Header = () => {
 
   const linkStyle = {
     textDecoration: "none", // Remove text decoration underline
+    fontWeight: "bold",
   };
 
   // create the logout functionality
@@ -45,7 +46,12 @@ const Header = () => {
   };
 
   return (
-    <Menu onClick={handleClick} selectedKeys={[current]} mode="horizontal">
+    <Menu
+      onClick={handleClick}
+      selectedKeys={[current]}
+      mode="horizontal"
+      style={{ backgroundColor: "#f8a8cc" }}
+    >
       <Item key="home" icon={<AppstoreOutlined />}>
         <Link to="/" style={linkStyle}>
           Home
@@ -57,17 +63,30 @@ const Header = () => {
           icon={<SettingOutlined />}
           title={userName}
           className="ml-auto"
+          style={linkStyle}
         >
-          <Item className="text-primary" key="setting:1">
-            option 2
-          </Item>
-          <Item className="text-primary" key="setting:2">
-            Option 2
-          </Item>
+          {/* conditonlally rendering the submenu based on user role */}
+          {userData && userData.role === "subscriber" && (
+            <Item className="text-primary">
+              <Link to="/user/dashboard" style={linkStyle}>
+                {" "}
+                Dashboard
+              </Link>
+            </Item>
+          )}
+          {userData && userData.role === "admin" && (
+            <Item className="text-primary">
+              <Link to="/admin/dashboard" style={linkStyle}>
+                {" "}
+                Dashboard
+              </Link>
+            </Item>
+          )}
           <Item
             className="text-primary"
             icon={<LogoutOutlined />}
             onClick={Logout}
+            style={linkStyle}
           >
             Logout
           </Item>
