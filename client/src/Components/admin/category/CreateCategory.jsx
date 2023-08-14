@@ -3,8 +3,7 @@ import AdminSidebar from "../../Navbar/adminSidebar";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import axios from "axios"; // these are async function that are imported from the functions
-import { axiox } from "axios";
-import { Link } from "react-router-dom";
+
 import {
   createCatetogy,
   removeCategory,
@@ -12,7 +11,7 @@ import {
 } from "../../functions/category";
 import { toast } from "react-toastify";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-
+import UpdateCatgory from "./UpdateCatgory";
 const CreateCategory = () => {
   const navigate = useNavigate();
   let user = useSelector((state) => state.rootreducer.user);
@@ -110,20 +109,23 @@ const CreateCategory = () => {
       });
   };
   //creating a form using function.
-  const ShowForm = () => (
-    <form action="" onSubmit={handleSubmit} className="form-group">
-      <input
-        className="form-control"
-        type="text"
-        value={name}
-        onChange={(e) => Setname(e.target.value)}
-        autoFocus
-        required
-      />
-      <br />
-      <button className="btn btn-md btn-outline-success">Create</button>
-    </form>
-  );
+  const ShowForm = () =>
+    user && user.role === "admin" ? (
+      <form action="" onSubmit={handleSubmit} className="form-group">
+        <input
+          className="form-control"
+          type="text"
+          value={name}
+          onChange={(e) => Setname(e.target.value)}
+          autoFocus
+          required
+        />
+        <br />
+        <button className="btn btn-md btn-outline-success">Create</button>
+      </form>
+    ) : (
+      " "
+    );
 
   return (
     <div className="container-fluid">
@@ -133,36 +135,49 @@ const CreateCategory = () => {
         </div>
         <div className="col-md-8  mt-3">
           {state ? (
-            <h4 className="text-center text-secondary">
-              Redirecting to home page {count}
-            </h4>
+            <div>
+              <h4 className="text-center text-secondary">
+                Redirecting to home page {count}
+              </h4>
+              <h3 className="text-center text-danger">
+                Sorry Only Admin can access this route
+              </h3>
+            </div>
           ) : (
             <h3 className="text-center"> Category page</h3>
           )}
           {ShowForm()}
           {/* rendering the response coming from the server */}
-
-          {categories?.map((el) => (
-            <div
-              className="alert alert-primary text-dark font-weight-bold "
-              key={el._id}
-            >
-              {el.name}
-              <span className="btn btn-sm float-right button " type="button">
-                <DeleteOutlined
-                  className="text-danger "
-                  onClick={() => {
-                    DeleteItem(el.slug);
-                  }}
-                />
-              </span>
-              <span className="btn btn-sm float-right  button">
-                <Link to={`/admin/category/${el.slug}`}>
-                  <EditOutlined className="text-warning " />
-                </Link>
-              </span>
-            </div>
-          ))}
+          {/* rendering the content based on the user if admin then only renders */}
+          {user && user.role === "admin"
+            ? categories?.map((el) => (
+                <div
+                  className="alert alert-primary text-dark font-weight-bold "
+                  key={el._id}
+                >
+                  {el.name}
+                  <span
+                    className="btn btn-sm float-right button "
+                    type="button"
+                  >
+                    <DeleteOutlined
+                      className="text-danger "
+                      onClick={() => {
+                        DeleteItem(el.slug);
+                      }}
+                    />
+                  </span>
+                  <span className="btn btn-sm float-right  button">
+                    <EditOutlined
+                      className="text-warning "
+                      onClick={() => {
+                        navigate(`/admin/category/${el.slug}/${el.name}`);
+                      }}
+                    />
+                  </span>
+                </div>
+              ))
+            : null}
         </div>
       </div>
     </div>

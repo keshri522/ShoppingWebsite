@@ -35,6 +35,7 @@ const read = async (req, res) => {
 
 const remove = async (req, res) => {
   try {
+    console.log(req.params.slug);
     const Deleted = await Category.findOneAndDelete({ slug: req.params.slug });
     // added some condtions
     if (Deleted) {
@@ -58,22 +59,24 @@ const list = async (req, res) => {
 
 const update = async (req, res) => {
   try {
-    // destructure the data coming from frontend
     const { name } = req.body;
-    console.log(req.params.slug, name);
-    // first find the name in the collection of Category
-    const check = await Category.findOneAndUpdate(
+
+    // Update the category name and slug using findOneAndUpdate
+    const updatedCategory = await Category.findOneAndUpdate(
       { slug: req.params.slug },
       { name: name, slug: slugify(name) },
-      { new: true } // it will return the updated statement each time user update the items .
+      { new: true } // Return the updated document
     );
-    if (!check) {
-      throw new Errro("Category not found");
+
+    if (!updatedCategory) {
+      console.log("not found");
+      throw new Error("Category not found");
     }
-    res.status(200).json(check);
+    res.status(200).json(updatedCategory);
   } catch (error) {
     res.status(400).send("Category not found");
   }
 };
+
 // export as a names ..
 module.exports = { create, update, read, list, remove };

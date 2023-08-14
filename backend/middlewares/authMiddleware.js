@@ -22,6 +22,7 @@ const adminMiddleware = async (req, res, next) => {
     const adminUser = await User.findOne({ email });
     if (adminUser.role === "admin") {
       // res.status(200).json(adminUser);
+
       next(); // next middleware
     } else {
       res.status(403).json("Admin access, admin denied");

@@ -44,7 +44,7 @@ const Password = () => {
   // function for the forms.
   const PasswordForm = () => (
     <form action="" onSubmit={handleSubmit}>
-      <div className="form-group ">
+      <div className="form-group mt-3 ">
         <input
           type="password"
           className="form-control"
@@ -54,7 +54,7 @@ const Password = () => {
           autoFocus
         />
         <button
-          className="btn btn-sm btn-secondary mt-2"
+          className="btn btn-sm btn-secondary mt-3"
           disabled={!password || loading}
         >
           Submit

@@ -9,6 +9,8 @@ import UserDashBoard from "./LoginUser/userDashboard";
 import Password from "./LoginUser/password";
 import AdminDashBoard from "./admin/adminDashboard";
 import CreateCategory from "./admin/category/CreateCategory";
+import UpdateCatgory from "./admin/category/UpdateCatgory";
+
 const Router = () => {
   return (
     <div>
@@ -37,6 +39,10 @@ const Router = () => {
         <Route
           path="admin/category"
           element={<CreateCategory></CreateCategory>}
+        ></Route>
+        <Route
+          path="admin/category/:slug/:name"
+          element={<UpdateCatgory></UpdateCatgory>}
         ></Route>
       </Routes>
     </div>

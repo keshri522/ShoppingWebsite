@@ -70,9 +70,14 @@ const AdminDashBoard = () => {
             {user && user.role === "admin" && <AdminSidebar></AdminSidebar>}
           </div>
           {state ? (
-            <h4 className="text-center text-secondary">
-              Redirecting to home page {count}
-            </h4>
+            <div className="mt-5">
+              <h4 className="text-center text-secondary">
+                Redirecting to home page {count}
+              </h4>
+              <h3 className="text-center text-danger">
+                Sorry Only Admin can access this route
+              </h3>
+            </div>
           ) : (
             <h1 className="text-center">Admin Dashboard</h1>
           )}

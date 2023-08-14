@@ -49,9 +49,14 @@ const UserDashBoard = () => {
             {user && user.email && <UserSidebar></UserSidebar>}
           </div>
           {state ? (
-            <h4 className="text-center text-secondary mt-5">
-              Redirecting to home page {count}
-            </h4>
+            <div>
+              <h4 className="text-center text-secondary mt-5">
+                Redirecting to home page {count}
+              </h4>
+              <h3 className="text-center text-danger">
+                Cannot access before login
+              </h3>
+            </div>
           ) : (
             <h1 className="text-center">User Dashboard</h1>
           )}

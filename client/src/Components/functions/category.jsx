@@ -57,17 +57,18 @@ const removeCategory = async (slug, token) => {
 };
 
 // for the update one. this is protected route means only admin can change..
-const updateCategory = async (slug, token, category) => {
+const updateCategory = async (slug, category, token) => {
   try {
     const response = await axios.put(
       `http://localhost:4000/route/category/${slug}`,
-      category,
+      { name: category }, // 2nd parameter is for the body
       {
         headers: {
           token: token,
         },
       }
     );
+    return response;
   } catch (error) {
     throw error;
   }
