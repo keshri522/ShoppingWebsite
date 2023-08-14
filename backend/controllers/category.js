@@ -5,6 +5,8 @@ const slugify = require("slugify"); // it will create automatic slugs based on r
 const create = async (req, res) => {
   try {
     const { name } = req.body;
+    console.log(name);
+
     // create new category
     const category = await new Category({ name: name, slug: slugify(name) });
     // save the category

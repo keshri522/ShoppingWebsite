@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import UserSidebar from "../../Navbar/UserSidebar";
+import UserSidebar from "../Navbar/UserSidebar";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
+
 const UserDashBoard = () => {
   const navigate = useNavigate();
 
@@ -14,6 +15,7 @@ const UserDashBoard = () => {
       if (user && user.email) {
         navigate("/user/dashboard");
         setstate(false);
+        console.log(state);
       } else {
         setstate(true);
         let interval = setInterval(() => {
@@ -24,7 +26,7 @@ const UserDashBoard = () => {
           navigate("/");
           setstate(false);
         }
-
+        console.log(state);
         // Clear the interval
         return () => {
           clearInterval(interval);
@@ -44,10 +46,10 @@ const UserDashBoard = () => {
       <div className="row">
         <div className="col">
           <div className="col-md-2">
-            <UserSidebar></UserSidebar>
+            {user && user.email && <UserSidebar></UserSidebar>}
           </div>
           {state ? (
-            <h4 className="text-center text-secondary">
+            <h4 className="text-center text-secondary mt-5">
               Redirecting to home page {count}
             </h4>
           ) : (

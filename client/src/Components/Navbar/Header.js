@@ -50,7 +50,7 @@ const Header = () => {
       onClick={handleClick}
       selectedKeys={[current]}
       mode="horizontal"
-      style={{ backgroundColor: "#f8a8cc" }}
+      style={{ backgroundColor: "#fae3b7" }}
     >
       <Item key="home" icon={<AppstoreOutlined />}>
         <Link to="/" style={linkStyle}>

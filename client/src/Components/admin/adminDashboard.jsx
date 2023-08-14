@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import UserSidebar from "../../Navbar/UserSidebar";
+import AdminSidebar from "../Navbar/adminSidebar";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import axios from "axios";
+
 const AdminDashBoard = () => {
   const navigate = useNavigate();
 
@@ -66,7 +67,7 @@ const AdminDashBoard = () => {
       <div className="row">
         <div className="col">
           <div className="col-md-2">
-            <UserSidebar></UserSidebar>
+            {user && user.role === "admin" && <AdminSidebar></AdminSidebar>}
           </div>
           {state ? (
             <h4 className="text-center text-secondary">

@@ -5,9 +5,10 @@ import Home from "./pages/auth/home";
 import Login from "./pages/auth/login";
 import RegisterComplete from "./pages/auth/registerComplete";
 import ForgotPassword from "./pages/auth/forgotpassword";
-import UserDashBoard from "./pages/auth/userDashboard";
+import UserDashBoard from "./LoginUser/userDashboard";
 import Password from "./LoginUser/password";
-import AdminDashBoard from "./pages/auth/adminDashboard";
+import AdminDashBoard from "./admin/adminDashboard";
+import CreateCategory from "./admin/category/CreateCategory";
 const Router = () => {
   return (
     <div>
@@ -33,6 +34,10 @@ const Router = () => {
           element={<AdminDashBoard></AdminDashBoard>}
         ></Route>
         <Route path="user/password" element={<Password></Password>}></Route>
+        <Route
+          path="admin/category"
+          element={<CreateCategory></CreateCategory>}
+        ></Route>
       </Routes>
     </div>
   );
