@@ -4,12 +4,14 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import axios from "axios"; // these are async function that are imported from the functions
 import { axiox } from "axios";
+import { Link } from "react-router-dom";
 import {
   createCatetogy,
   removeCategory,
   getCategory,
 } from "../../functions/category";
 import { toast } from "react-toastify";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 
 const CreateCategory = () => {
   const navigate = useNavigate();
@@ -64,8 +66,15 @@ const CreateCategory = () => {
   }, [user, count, navigate, state]);
 
   const [name, Setname] = useState("");
-  const [loading, Setloading] = useState(false);
-  // creating handle submit
+  const [categories, Setcategories] = useState([]); // this is for the getting all the categories.
+  // we need to run the getcategory in
+  // getting all the list of category from the backend using the api..
+  useEffect(() => {
+    getCategory().then((res) => {
+      Setcategories(res.data);
+    });
+  }, []);
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -74,21 +83,30 @@ const CreateCategory = () => {
       .then((res) => {
         Setname("");
         toast.success(`${res.data.name} is Created sucessfully`);
-        Setloading(true);
+        // appending the data coming in the response in the start means that res added at top
+        Setcategories((prevData) => [res.data, ...prevData]);
       })
       .catch((err) => {
-        Setloading(false);
         // showing error based on the status
         if (err.response && err.response.status === 400) {
           // coming the code from backend ifalready the categroy present
           toast.error("Catergory already created");
         }
+      });
+  };
 
-        // if (err.response && err.response.status === 400) {
-        //   // coming the code from backend ifalready the categroy present
-        //   toast.error(err.res.data);
-        //   console.log("category already presnet");
-        // }
+  // Deleting the categories when admin click on the any of the delte button.
+  // to render on frontend we need to perform the delete operation on user state to inSTANT UPDATE THE STATE AFTER deleting.
+  const DeleteItem = async (slug, token) => {
+    removeCategory(slug, user.token)
+      .then((res) => {
+        // console.log(res);
+        // i need to set the category and return only those which are not equal to given slug..
+        let filterdata = categories.filter((item) => item.slug !== slug);
+        Setcategories(filterdata);
+      })
+      .catch((err) => {
+        console.log(err);
       });
   };
   //creating a form using function.
@@ -119,9 +137,32 @@ const CreateCategory = () => {
               Redirecting to home page {count}
             </h4>
           ) : (
-            <h3 className="text-center">Create category page</h3>
+            <h3 className="text-center"> Category page</h3>
           )}
           {ShowForm()}
+          {/* rendering the response coming from the server */}
+
+          {categories?.map((el) => (
+            <div
+              className="alert alert-primary text-dark font-weight-bold "
+              key={el._id}
+            >
+              {el.name}
+              <span className="btn btn-sm float-right button " type="button">
+                <DeleteOutlined
+                  className="text-danger "
+                  onClick={() => {
+                    DeleteItem(el.slug);
+                  }}
+                />
+              </span>
+              <span className="btn btn-sm float-right  button">
+                <Link to={`/admin/category/${el.slug}`}>
+                  <EditOutlined className="text-warning " />
+                </Link>
+              </span>
+            </div>
+          ))}
         </div>
       </div>
     </div>
