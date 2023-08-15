@@ -29,7 +29,7 @@ const AdminSidebar = () => (
       </li>
 
       <li className="nav-item">
-        <Link to="/admin/sub" className="nav-link text-secondary">
+        <Link to="/admin/subcategory" className="nav-link text-secondary">
           Sub Category
         </Link>
       </li>

@@ -2,11 +2,11 @@
 import axios from "axios";
 // this is for creating category api..  this is protected routes so we need to send the toekn also
 
-const createCatetogy = async (category, token) => {
+const createsubcategory = async (category, token, parentId) => {
   try {
     const response = await axios.post(
-      `${process.env.REACT_APP_ROUTE_API}/category`,
-      { name: category },
+      `${process.env.REACT_APP_ROUTE_API}/subcategory`,
+      { name: category, parent: parentId },
       {
         headers: {
           token: token,
@@ -20,10 +20,10 @@ const createCatetogy = async (category, token) => {
 };
 
 // for the get all the categroy this is not protected it can access by any one..
-const getCategory = async () => {
+const getsubcategory = async () => {
   try {
     const response = await axios.get(
-      `${process.env.REACT_APP_ROUTE_API}/categories`
+      `${process.env.REACT_APP_ROUTE_API}/subcategories`
     );
     return response;
   } catch (error) {
@@ -31,10 +31,10 @@ const getCategory = async () => {
   }
 };
 // get category by names
-const getCategoryNames = async (slug) => {
+const getsubcategorynames = async (slug) => {
   try {
     const response = await axios.get(
-      `${process.env.REACT_APP_ROUTE_API}/category/${slug}`
+      `${process.env.REACT_APP_ROUTE_API}/subcategory/${slug}`
     );
     return response;
   } catch (error) {
@@ -44,10 +44,10 @@ const getCategoryNames = async (slug) => {
 };
 
 // for the delete of category.
-const removeCategory = async (slug, token) => {
+const removesubcategory = async (slug, token) => {
   try {
     const response = await axios.delete(
-      `${process.env.REACT_APP_ROUTE_API}/category/${slug}`,
+      `${process.env.REACT_APP_ROUTE_API}/subcategory/${slug}`,
       {
         headers: {
           token: token,
@@ -62,10 +62,10 @@ const removeCategory = async (slug, token) => {
 };
 
 // for the update one. this is protected route means only admin can change..
-const updateCategory = async (slug, category, token) => {
+const updatesubcategory = async (slug, category, token) => {
   try {
     const response = await axios.put(
-      `${process.env.REACT_APP_ROUTE_API}/category/${slug}`,
+      `${process.env.REACT_APP_ROUTE_API}/subcategory/${slug}`,
       { name: category }, // 2nd parameter is for the body
       {
         headers: {
@@ -81,9 +81,9 @@ const updateCategory = async (slug, category, token) => {
 
 // export all the function
 export {
-  updateCategory,
-  getCategory,
-  getCategoryNames,
-  createCatetogy,
-  removeCategory,
+  updatesubcategory,
+  getsubcategory,
+  getsubcategorynames,
+  createsubcategory,
+  removesubcategory,
 };

@@ -10,7 +10,7 @@ import Password from "./LoginUser/password";
 import AdminDashBoard from "./admin/adminDashboard";
 import CreateCategory from "./admin/category/CreateCategory";
 import UpdateCatgory from "./admin/category/UpdateCatgory";
-
+import Subcategory from "./admin/Subcategory/subcategory";
 const Router = () => {
   return (
     <div>
@@ -43,6 +43,10 @@ const Router = () => {
         <Route
           path="admin/category/:slug"
           element={<UpdateCatgory></UpdateCatgory>}
+        ></Route>
+        <Route
+          path="admin/subcategory/"
+          element={<Subcategory></Subcategory>}
         ></Route>
       </Routes>
     </div>

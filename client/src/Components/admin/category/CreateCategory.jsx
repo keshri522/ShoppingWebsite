@@ -178,6 +178,8 @@ const CreateCategory = () => {
                         className="text-danger "
                         onClick={() => {
                           DeleteItem(el.slug);
+                          toast.success(`${el.slug} deleted successfully`);
+                          Setkeyword("");
                         }}
                       />
                     </span>
