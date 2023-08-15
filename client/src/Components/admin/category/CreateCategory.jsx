@@ -11,7 +11,7 @@ import {
 } from "../../functions/category";
 import { toast } from "react-toastify";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import UpdateCatgory from "./UpdateCatgory";
+import Categoryfrom from "../../forms/categoryfrom";
 const CreateCategory = () => {
   const navigate = useNavigate();
   let user = useSelector((state) => state.rootreducer.user);
@@ -66,6 +66,7 @@ const CreateCategory = () => {
 
   const [name, Setname] = useState("");
   const [categories, Setcategories] = useState([]); // this is for the getting all the categories.
+  const [keyword, Setkeyword] = useState("");
   // we need to run the getcategory in
   // getting all the list of category from the backend using the api..
   useEffect(() => {
@@ -108,24 +109,17 @@ const CreateCategory = () => {
         console.log(err);
       });
   };
-  //creating a form using function.
-  const ShowForm = () =>
-    user && user.role === "admin" ? (
-      <form action="" onSubmit={handleSubmit} className="form-group">
-        <input
-          className="form-control"
-          type="text"
-          value={name}
-          onChange={(e) => Setname(e.target.value)}
-          autoFocus
-          required
-        />
-        <br />
-        <button className="btn btn-md btn-outline-success">Create</button>
-      </form>
-    ) : (
-      " "
+  // createing the handlechange
+  const handleChange = (e) => {
+    e.preventDefault();
+    Setkeyword(e.target.value);
+  };
+  // this function will check if the keyword that admi enter is present in the category or not..
+  const SearchFilterItem = (categories, keyword) => {
+    return categories.filter((items) =>
+      items.name.toLowerCase().startsWith(keyword.toLowerCase())
     );
+  };
 
   return (
     <div className="container-fluid">
@@ -146,37 +140,90 @@ const CreateCategory = () => {
           ) : (
             <h3 className="text-center"> Category page</h3>
           )}
-          {ShowForm()}
+          {/* Refactor the code  */}
+          {user && user.role && user.role === "admin" ? (
+            <div>
+              <Categoryfrom
+                handleSubmit={handleSubmit}
+                Setname={Setname}
+                name={name}
+              ></Categoryfrom>
+
+              {/* for the filter of the category */}
+              <input
+                type="search"
+                value={keyword}
+                onChange={handleChange}
+                placeholder="Find Category "
+                className="form-control mb-5"
+              />
+            </div>
+          ) : null}
+
           {/* rendering the response coming from the server */}
           {/* rendering the content based on the user if admin then only renders */}
           {user && user.role === "admin"
-            ? categories?.map((el) => (
-                <div
-                  className="alert alert-primary text-dark font-weight-bold "
-                  key={el._id}
-                >
-                  {el.name}
-                  <span
-                    className="btn btn-sm float-right button "
-                    type="button"
+            ? keyword.length > 0
+              ? SearchFilterItem(categories, keyword)?.map((el) => (
+                  <div
+                    className="alert alert-primary text-dark font-weight-bold "
+                    key={el._id}
                   >
-                    <DeleteOutlined
-                      className="text-danger "
-                      onClick={() => {
-                        DeleteItem(el.slug);
-                      }}
-                    />
-                  </span>
-                  <span className="btn btn-sm float-right  button">
-                    <EditOutlined
-                      className="text-warning "
-                      onClick={() => {
-                        navigate(`/admin/category/${el.slug}/${el.name}`);
-                      }}
-                    />
-                  </span>
-                </div>
-              ))
+                    {el.name}
+                    <span
+                      className="btn btn-sm float-right button "
+                      type="button"
+                    >
+                      <DeleteOutlined
+                        className="text-danger "
+                        onClick={() => {
+                          DeleteItem(el.slug);
+                        }}
+                      />
+                    </span>
+                    <span className="btn btn-sm float-right  button">
+                      <EditOutlined
+                        className="text-warning "
+                        onClick={() => {
+                          // sending the name of slug also that we use in uelocation hook to grab it.
+                          navigate(`/admin/category/${el.slug}`, {
+                            state: el.name,
+                          });
+                        }}
+                      />
+                    </span>
+                  </div>
+                ))
+              : categories?.map((el) => (
+                  <div
+                    className="alert alert-primary text-dark font-weight-bold "
+                    key={el._id}
+                  >
+                    {el.name}
+                    <span
+                      className="btn btn-sm float-right button "
+                      type="button"
+                    >
+                      <DeleteOutlined
+                        className="text-danger "
+                        onClick={() => {
+                          DeleteItem(el.slug);
+                        }}
+                      />
+                    </span>
+                    <span className="btn btn-sm float-right  button">
+                      <EditOutlined
+                        className="text-warning "
+                        onClick={() => {
+                          // sending the name of slug also that we use in uelocation hook to grab it.
+                          navigate(`/admin/category/${el.slug}`, {
+                            state: el.name,
+                          });
+                        }}
+                      />
+                    </span>
+                  </div>
+                ))
             : null}
         </div>
       </div>

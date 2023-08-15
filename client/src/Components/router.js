@@ -41,7 +41,7 @@ const Router = () => {
           element={<CreateCategory></CreateCategory>}
         ></Route>
         <Route
-          path="admin/category/:slug/:name"
+          path="admin/category/:slug"
           element={<UpdateCatgory></UpdateCatgory>}
         ></Route>
       </Routes>

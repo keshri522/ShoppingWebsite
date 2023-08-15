@@ -3,8 +3,7 @@ import { auth } from "../../firbase";
 import { sendSignInLinkToEmail } from "firebase/auth";
 import { toast } from "react-toastify";
 import "../../../style.css";
-import { MailOutlined } from "@ant-design/icons";
-import { Button } from "antd";
+import Registerform from "../../forms/registerform";
 import { useNavigate } from "react-router";
 import { useSelector } from "react-redux";
 const Register = () => {
@@ -39,8 +38,8 @@ const Register = () => {
         `Email is sent to ${email}. Click the link to complete your registration.`
       );
     } catch (error) {
-      toast.error("Some is wrong please try after sometime");
-      console.log(error);
+      toast.error("Some is wrong please fill proper email format");
+      // console.log(error);
     }
 
     // save user email in local storage
@@ -48,31 +47,6 @@ const Register = () => {
     // clear state
     setEmail("");
   };
-  const registerForm = () => (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="email"
-        className="form-control "
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        autoFocus
-        placeholder="Enter your email address"
-      />
-
-      <Button
-        onClick={handleSubmit}
-        type="primary"
-        size="middle"
-        icon={<MailOutlined />}
-        block
-        shape="round"
-        className="mt-4"
-        disabled={!email}
-      >
-        Registe with email
-      </Button>
-    </form>
-  );
 
   return (
     <div className="container p-5">
@@ -80,7 +54,13 @@ const Register = () => {
         <div className="col-md-6 offset-md-3">
           <h3 className="text-center text-primary">Register</h3>
           <br />
-          {registerForm()}
+
+          {/* import register form from form */}
+          <Registerform
+            handleSubmit={handleSubmit}
+            email={email}
+            setEmail={setEmail}
+          ></Registerform>
         </div>
       </div>
     </div>

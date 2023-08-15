@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import axios from "axios";
@@ -7,17 +7,31 @@ import { toast } from "react-toastify";
 import { updateCategory } from "../../functions/category";
 const UpdateCatgory = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  /// getting the name based on the user click on the edit using uselocation hook.
+
   // this will get the token or email from rdeux store
   let user = useSelector((state) => state.rootreducer.user);
 
-  let { slug, name } = useParams();
+  let { slug } = useParams();
   // setting the useState ot name of parameter coming from routes
-  console.log(slug);
+
   const [NewName, SetNewName] = useState();
-  const [OldName, SetOldName] = useState(name);
+  const [OldName, SetOldName] = useState(location.state);
   const [loading, Setloading] = useState(false);
   const [count, Setcount] = useState(5);
   const [state, setstate] = useState(false);
+  // this will run if  admin manuallly go the special category
+  useEffect(() => {
+    if (user && user.role && user.role === "admin") {
+      // Only proceed if the user is an admin
+      let route = `http://localhost:3000/admin/category/${
+        slug || location.state
+      }`;
+
+      SetOldName(slug.toLowerCase() || location.state.toLowerCase()); // Set the oldName state
+    }
+  }, [user, slug, location.state]); // this will run if any of the depedencies is changed
 
   // this is protected route means only logged user can access.
   //   using useeffect..

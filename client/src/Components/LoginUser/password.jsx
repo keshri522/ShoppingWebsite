@@ -2,7 +2,13 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { auth } from "../firbase";
 import { updatePassword } from "firebase/auth";
+import { useNavigate } from "react-router";
+import { useSelector } from "react-redux";
+
 const Password = () => {
+  // getting the data or user from redux store..
+  const LoginUser = useSelector((state) => state.rootreducer.user);
+  const navigate = useNavigate();
   const [password, Setpassword] = useState("");
 
   // for the trak of loading we use a usestate..
@@ -35,6 +41,12 @@ const Password = () => {
         Setloading(false);
         toast.success("Password updated  successfully");
         Setpassword("");
+        // navigating based on the user after password is updated
+        if (LoginUser && LoginUser.role && LoginUser.role === "admin") {
+          navigate("/admin/dashboard");
+        } else {
+          navigate("/user/dashboard");
+        }
       }
     } catch (error) {
       Setloading(false);

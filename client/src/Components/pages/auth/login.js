@@ -7,14 +7,14 @@ import {
 } from "firebase/auth";
 import { toast } from "react-toastify";
 import "../../../style.css";
-import { Link } from "react-router-dom";
-import { MailOutlined, GoogleOutlined } from "@ant-design/icons";
-import { Button } from "antd";
+
 import { loggedInUser } from "../../Redux/reducers/userReducers";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { useSelector } from "react-redux";
 import axios from "axios";
+// for the refactoring of code i import the login form from forms.
+import Loginform from "../../forms/loginfom";
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -76,7 +76,7 @@ const Login = () => {
             config // 3rd one is passed in the headers
           )
           .then((data) => {
-            console.log("The response is sucessfull and the data is ", data);
+            // console.log("The response is sucessfull and the data is ", data);
 
             // the data coming from post request simply dispatching into the redux store. that can be accesss any where
             dispatch(
@@ -92,14 +92,14 @@ const Login = () => {
             roleBasedRedirect(data);
           })
           .catch((error) => {
-            console.log(error);
+            // console.log(error);
           });
 
         // navigate to home page
         navigate("/");
       } catch (error) {
         toast.error("User not found, please check email and password");
-        console.log(error);
+        // console.log(error);
         setLoading(false);
       }
     }
@@ -141,66 +141,66 @@ const Login = () => {
           roleBasedRedirect(data);
         })
         .catch((error) => {
-          console.log(error);
+          // console.log(error);
         });
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
-  const loginform = () => (
-    <form onSubmit={handleSubmit}>
-      <div className="form-group">
-        <input
-          type="email"
-          className="form-control "
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          autoFocus
-          placeholder="Enter your email address"
-        />
-      </div>
-      <div className="form-group">
-        <input
-          type="password"
-          className="form-control "
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Enter your password"
-        />
-      </div>
-      <Button
-        onClick={handleSubmit}
-        type="primary"
-        size="large"
-        icon={<MailOutlined />}
-        block
-        shape="round"
-        className="mt-2"
-        disabled={!email || password.length < 6}
-      >
-        Login with email/password
-      </Button>
+  // const loginform = () => (
+  //   <form onSubmit={handleSubmit}>
+  //     <div className="form-group">
+  //       <input
+  //         type="email"
+  //         className="form-control "
+  //         value={email}
+  //         onChange={(e) => setEmail(e.target.value)}
+  //         autoFocus
+  //         placeholder="Enter your email address"
+  //       />
+  //     </div>
+  //     <div className="form-group">
+  //       <input
+  //         type="password"
+  //         className="form-control "
+  //         value={password}
+  //         onChange={(e) => setPassword(e.target.value)}
+  //         placeholder="Enter your password"
+  //       />
+  //     </div>
+  //     <Button
+  //       onClick={handleSubmit}
+  //       type="primary"
+  //       size="large"
+  //       icon={<MailOutlined />}
+  //       block
+  //       shape="round"
+  //       className="mt-2"
+  //       disabled={!email || password.length < 6}
+  //     >
+  //       Login with email/password
+  //     </Button>
 
-      <Button
-        onClick={googleLogin}
-        size="large"
-        icon={<GoogleOutlined />}
-        block
-        shape="round"
-        className="mt-4 bg-warning"
-      >
-        Login with Google
-      </Button>
+  //     <Button
+  //       onClick={googleLogin}
+  //       size="large"
+  //       icon={<GoogleOutlined />}
+  //       block
+  //       shape="round"
+  //       className="mt-4 bg-warning"
+  //     >
+  //       Login with Google
+  //     </Button>
 
-      <Link
-        to="/forgot/password"
-        className="float-right text-danger mt-2 text-decoration-none font-weight-bold"
-      >
-        forgot password
-      </Link>
-    </form>
-  );
+  //     <Link
+  //       to="/forgot/password"
+  //       className="float-right text-danger mt-2 text-decoration-none font-weight-bold"
+  //     >
+  //       forgot password
+  //     </Link>
+  //   </form>
+  // );
 
   return (
     <div className="container p-5">
@@ -212,7 +212,17 @@ const Login = () => {
             <h3 className="text-center text-primary"> User Login</h3>
           )}
           <br />
-          {loginform()}
+          {/* {loginform()} */}
+          {/* import the form of login in it reduces the codes here simply import
+          from form */}
+          <Loginform
+            handleSubmit={handleSubmit}
+            email={email}
+            setEmail={setEmail}
+            password={password}
+            setPassword={setPassword}
+            googleLogin={googleLogin}
+          ></Loginform>
         </div>
       </div>
     </div>
