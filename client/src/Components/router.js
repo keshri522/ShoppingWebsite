@@ -12,6 +12,7 @@ import CreateCategory from "./admin/category/CreateCategory";
 import UpdateCatgory from "./admin/category/UpdateCatgory";
 import Subcategory from "./admin/Subcategory/subcategory";
 import UpdateSubcatgory from "./admin/Subcategory/updateSubcategory";
+import ProductCreate from "./admin/product/productCreate";
 const Router = () => {
   return (
     <div>
@@ -52,6 +53,10 @@ const Router = () => {
         <Route
           path="admin/subcategory/:slug"
           element={<UpdateSubcatgory></UpdateSubcatgory>}
+        ></Route>
+        <Route
+          path="admin/product"
+          element={<ProductCreate></ProductCreate>}
         ></Route>
       </Routes>
     </div>
