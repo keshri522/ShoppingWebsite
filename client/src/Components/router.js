@@ -11,6 +11,7 @@ import AdminDashBoard from "./admin/adminDashboard";
 import CreateCategory from "./admin/category/CreateCategory";
 import UpdateCatgory from "./admin/category/UpdateCatgory";
 import Subcategory from "./admin/Subcategory/subcategory";
+import UpdateSubcatgory from "./admin/Subcategory/updateSubcategory";
 const Router = () => {
   return (
     <div>
@@ -47,6 +48,10 @@ const Router = () => {
         <Route
           path="admin/subcategory/"
           element={<Subcategory></Subcategory>}
+        ></Route>
+        <Route
+          path="admin/subcategory/:slug"
+          element={<UpdateSubcatgory></UpdateSubcatgory>}
         ></Route>
       </Routes>
     </div>

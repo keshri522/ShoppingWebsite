@@ -4,6 +4,8 @@ import AdminSidebar from "../../Navbar/adminSidebar";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
+
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import axios from "axios"; // these are async function that are imported from the functions
 import {
   createsubcategory,
@@ -19,6 +21,7 @@ const Subcategory = () => {
   const [state, setstate] = useState(false);
 
   const [name, Setname] = useState("");
+  const [subcategory, Setsubcategory] = useState([]);
   const [categories, Setcategories] = useState([]); // this is for the getting all the categories.
   const [keyword, Setkeyword] = useState("");
   const [category, setcategory] = useState("");
@@ -75,6 +78,9 @@ const Subcategory = () => {
     getCategory().then((res) => {
       Setcategories(res.data);
     });
+    getsubcategory().then((res) => {
+      Setsubcategory(res.data);
+    });
   }, []);
 
   // createing the handlechange
@@ -84,6 +90,12 @@ const Subcategory = () => {
     console.log(keyword);
   };
 
+  // this function will check if the keyword that admi enter is present in the category or not..
+  const SearchFilterItem = (cateegory, keyword) => {
+    return subcategory.filter((items) =>
+      items.name.toLowerCase().startsWith(keyword.toLowerCase())
+    );
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -92,9 +104,10 @@ const Subcategory = () => {
       .then((res) => {
         Setname("");
         console.log(res);
-        // toast.success(`${res.data.name} is Created sucessfully`);
+        toast.success(`${res.data.name} is Created sucessfully`);
         // appending the data coming in the response in the start means that res added at top
-        // Setcategories((prevData) => [res.data, ...prevData]);
+
+        Setsubcategory((prevData) => [res.data, ...prevData]);
       })
       .catch((err) => {
         // showing error based on the status
@@ -105,6 +118,20 @@ const Subcategory = () => {
       });
   };
 
+  // Deleting the categories when admin click on the any of the delte button.
+  // to render on frontend we need to perform the delete operation on user state to inSTANT UPDATE THE STATE AFTER deleting.
+  const DeleteItem = async (slug, token) => {
+    removesubcategory(slug, user.token)
+      .then((res) => {
+        // console.log(res);
+        // i need to set the category and return only those which are not equal to given slug..
+        let filterdata = subcategory.filter((item) => item.slug !== slug);
+        Setsubcategory(filterdata);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <div className="container-fluid">
       <div className="row">
@@ -169,6 +196,71 @@ const Subcategory = () => {
               </div>
             </div>
           ) : null}
+          {user && user.role === "admin"
+            ? keyword.length > 0
+              ? SearchFilterItem(categories, keyword)?.map((el) => (
+                  <div
+                    className="alert alert-primary text-dark font-weight-bold "
+                    key={el._id}
+                  >
+                    {el.name}
+                    <span
+                      className="btn btn-sm float-right button "
+                      type="button"
+                    >
+                      <DeleteOutlined
+                        className="text-danger "
+                        onClick={() => {
+                          DeleteItem(el.slug);
+                          toast.success(`${el.slug} deleted successfully`);
+                          Setkeyword("");
+                        }}
+                      />
+                    </span>
+                    <span className="btn btn-sm float-right  button">
+                      <EditOutlined
+                        className="text-warning "
+                        onClick={() => {
+                          // sending the name of slug also that we use in uelocation hook to grab it.
+                          navigate(`/admin/subcategory/${el.slug}`, {
+                            state: el.name,
+                          });
+                        }}
+                      />
+                    </span>
+                  </div>
+                ))
+              : subcategory?.map((el) => (
+                  <div
+                    className="alert alert-primary text-dark font-weight-bold "
+                    key={el._id}
+                  >
+                    {el.name}
+                    <span
+                      className="btn btn-sm float-right button "
+                      type="button"
+                    >
+                      <DeleteOutlined
+                        className="text-danger "
+                        onClick={() => {
+                          DeleteItem(el.slug);
+                        }}
+                      />
+                    </span>
+                    <span className="btn btn-sm float-right  button">
+                      <EditOutlined
+                        className="text-warning "
+                        onClick={() => {
+                          // sending the name of slug also that we use in uelocation hook to grab it.
+                          navigate(`/admin/subcategory/${el.slug}`, {
+                            state: el.name,
+                          });
+                        }}
+                      />
+                    </span>
+                  </div>
+                ))
+            : null}
         </div>
       </div>
     </div>
