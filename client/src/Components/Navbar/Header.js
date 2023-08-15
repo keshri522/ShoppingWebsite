@@ -6,6 +6,8 @@ import {
   UserOutlined,
   UserAddOutlined,
   LogoutOutlined,
+  GithubOutlined,
+  LinkedinOutlined,
 } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -46,68 +48,88 @@ const Header = () => {
   };
 
   return (
-    <Menu
-      onClick={handleClick}
-      selectedKeys={[current]}
-      mode="horizontal"
-      style={{ backgroundColor: "#fae3b7" }}
-    >
-      <Item key="home" icon={<AppstoreOutlined />}>
-        <Link to="/" style={linkStyle}>
-          Home
-        </Link>
-      </Item>
-      {/* conditionally rendering the button based on the user present or not */}
-      {userData && (
-        <SubMenu
-          icon={<SettingOutlined />}
-          title={userName}
-          className="ml-auto"
-          style={linkStyle}
-        >
-          {/* conditonlally rendering the submenu based on user role */}
-          {userData && userData.role === "subscriber" && (
-            <Item className="text-primary">
-              <Link to="/user/dashboard" style={linkStyle}>
-                {" "}
-                Dashboard
-              </Link>
-            </Item>
-          )}
-          {userData && userData.role === "admin" && (
-            <Item className="text-primary">
-              <Link to="/admin/dashboard" style={linkStyle}>
-                {" "}
-                Dashboard
-              </Link>
-            </Item>
-          )}
-          <Item
-            className="text-primary"
-            icon={<LogoutOutlined />}
-            onClick={Logout}
+    <>
+      <Menu
+        onClick={handleClick}
+        selectedKeys={[current]}
+        mode="horizontal"
+        style={{ backgroundColor: "#fae3b7" }}
+      >
+        <Item key="home" icon={<AppstoreOutlined />}>
+          <Link to="/" style={linkStyle}>
+            Home
+          </Link>
+        </Item>
+        {/* conditionally rendering the button based on the user present or not */}
+        {userData && (
+          <SubMenu
+            icon={<SettingOutlined />}
+            title={userName}
+            className="ml-auto"
             style={linkStyle}
           >
-            Logout
+            {/* conditonlally rendering the submenu based on user role */}
+            {userData && userData.role === "subscriber" && (
+              <Item className="text-primary">
+                <Link to="/user/dashboard" style={linkStyle}>
+                  {" "}
+                  Dashboard
+                </Link>
+              </Item>
+            )}
+            {userData && userData.role === "admin" && (
+              <Item className="text-primary">
+                <Link to="/admin/dashboard" style={linkStyle}>
+                  {" "}
+                  Dashboard
+                </Link>
+              </Item>
+            )}
+            <Item
+              className="text-primary"
+              icon={<LogoutOutlined />}
+              onClick={Logout}
+              style={linkStyle}
+            >
+              Logout
+            </Item>
+          </SubMenu>
+        )}
+        {!userData && (
+          <Item key="login" icon={<UserOutlined />}>
+            <Link to="/login" style={linkStyle}>
+              Login
+            </Link>
           </Item>
-        </SubMenu>
-      )}
+        )}
+        {!userData && (
+          <Item key="register" icon={<UserAddOutlined />}>
+            <Link to="/register" style={linkStyle}>
+              Register
+            </Link>
+          </Item>
+        )}
+        {/* Adding the two icons on the right */}
+        <div className="ml-auto">
+          <Link
+            to="https://www.linkedin.com/in/rahul-keshri-814bb8221/"
+            target="_main"
+          >
+            <LinkedinOutlined
+              style={{ fontSize: "25px", color: "#000" }}
+              className="mx-3 right"
+            ></LinkedinOutlined>
+          </Link>
 
-      {!userData && (
-        <Item key="login" icon={<UserOutlined />}>
-          <Link to="/login" style={linkStyle}>
-            Login
+          <Link to="https://github.com/keshri522" target="_main">
+            <GithubOutlined
+              style={{ fontSize: "25px", color: "#000" }}
+              className="mx-3 right"
+            ></GithubOutlined>
           </Link>
-        </Item>
-      )}
-      {!userData && (
-        <Item key="register" icon={<UserAddOutlined />}>
-          <Link to="/register" style={linkStyle}>
-            Register
-          </Link>
-        </Item>
-      )}
-    </Menu>
+        </div>
+      </Menu>
+    </>
   );
 };
 
