@@ -5,31 +5,33 @@ import { useNavigate } from "react-router";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { updatesubcategory } from "../../functions/subcategory";
+import { getCategory } from "../../functions/category";
 const UpdateSubcatgory = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   /// getting the name based on the user click on the edit using uselocation hook.
+  const location = useLocation();
 
   // this will get the token or email from rdeux store
   let user = useSelector((state) => state.rootreducer.user);
 
   let { slug } = useParams();
   // setting the useState ot name of parameter coming from routes
+  const [initialState, SetinitialState] = useState(slug);
+  const [NewName, SetNewName] = useState(slug);
 
-  const [NewName, SetNewName] = useState();
-  const [OldName, SetOldName] = useState(location.state);
-
+  const [categories, Setcategories] = useState([]); // to store all the categories
   const [count, Setcount] = useState(5);
   const [state, setstate] = useState(false);
+  const [parent, Setparent] = useState(); // for the select once selected the of select is in the parent
   // this will run if  admin manuallly go the special category
   useEffect(() => {
     if (user && user.role && user.role === "admin") {
       // Only proceed if the user is an admin
       let route = `http://localhost:3000/admin/subcategory/${
-        slug || location.state
+        slug || location.state.name
       }`;
 
-      SetOldName(slug.toLowerCase() || location.state.toLowerCase()); // Set the oldName state
+      SetNewName(slug);
     }
   }, [user, slug, location.state]); // this will run if any of the depedencies is changed
 
@@ -79,20 +81,16 @@ const UpdateSubcatgory = () => {
     }
   }, [user, count, navigate, state]);
 
+  // getting all the category to show on the select option
+  useEffect(() => {
+    getCategory().then((res) => {
+      Setcategories(res.data);
+    });
+  }, []);
   const ShowForm = () =>
     // this is portected route so we need to show form based on the user if role==="admin then only showth form other wise null"
     user && user.role && user.role === "admin" ? (
       <form action="" onSubmit={handleSubmit} className="form-group">
-        <div className="mt-2">
-          <input
-            className="form-control"
-            type="text"
-            value={OldName}
-            contentEditable="false"
-            style={{ fontWeight: "bold", fontSize: "20px" }}
-          />
-        </div>
-
         <div className="mt-4">
           <input
             className="form-control"
@@ -101,7 +99,6 @@ const UpdateSubcatgory = () => {
             onChange={(e) => SetNewName(e.target.value)}
             autoFocus
             required
-            placeholder="Enter name to be updated"
             style={{ fontWeight: "bold", fontSize: "20px" }}
           />
         </div>
@@ -121,12 +118,13 @@ const UpdateSubcatgory = () => {
     updatesubcategory(slug, NewName, user.token)
       .then((res) => {
         // console.log(res);
+
         navigate("/admin/subcategory");
-        toast.success(`${OldName}  has updated to ${res.data.name}`);
+        toast.success(`${initialState}  has updated to ${res.data.name}`);
       })
       .catch((err) => {
         if (err && err.response && err.response.status === 400) {
-          toast.error("Subcatergory not found");
+          toast.error("Please Select the parent category");
           //   console.log(err);
         }
       });
@@ -146,6 +144,34 @@ const UpdateSubcatgory = () => {
           ) : (
             <h1 className="text-center text-primary">Update Subcategory</h1>
           )}
+          {user && user.role && user.role === "admin" ? (
+            <div className="form-group mt-4">
+              <label htmlFor="" className="text-primary">
+                Parent Category
+              </label>
+              <select
+                name="category"
+                className="form-control"
+                onChange={(e) => {
+                  Setparent(e.target.value);
+                }}
+              >
+                {/* Render options based on the categories */}
+                {categories &&
+                  categories.length > 0 &&
+                  categories.map((items) => (
+                    <option
+                      value={items._id}
+                      key={items._id}
+                      selected={items._id === parent}
+                      className="m-2"
+                    >
+                      {items.name}
+                    </option>
+                  ))}
+              </select>
+            </div>
+          ) : null}
           {ShowForm()}
         </div>
       </div>

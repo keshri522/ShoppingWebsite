@@ -103,7 +103,7 @@ const Subcategory = () => {
     createsubcategory(name, user.token, category)
       .then((res) => {
         Setname("");
-        console.log(res);
+
         toast.success(`${res.data.name} is Created sucessfully`);
         // appending the data coming in the response in the start means that res added at top
 
@@ -253,7 +253,7 @@ const Subcategory = () => {
                         onClick={() => {
                           // sending the name of slug also that we use in uelocation hook to grab it.
                           navigate(`/admin/subcategory/${el.slug}`, {
-                            state: el.name,
+                            state: el,
                           });
                         }}
                       />
