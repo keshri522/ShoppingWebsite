@@ -1,5 +1,6 @@
 // import catergory modal first
 const Category = require("../model/category");
+const Subcategory = require("../model/subcategory");
 // import slugigy ..
 const slugify = require("slugify"); // it will create automatic slugs based on req.body data
 const create = async (req, res) => {
@@ -78,5 +79,20 @@ const update = async (req, res) => {
   }
 };
 
+const getSubcatecory = async (req, res) => {
+  // find the id coming from the in params in subcategory collections..
+  try {
+    let subs = await Subcategory.find({ parent: req.params._Id });
+    if (subs) {
+      res.status(200).send(subs);
+    } else {
+      res.status(404).json("No subcategory founds");
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(400).json(error.message);
+  }
+};
+
 // export as a names ..
-module.exports = { create, update, read, list, remove };
+module.exports = { create, update, read, list, remove, getSubcatecory };

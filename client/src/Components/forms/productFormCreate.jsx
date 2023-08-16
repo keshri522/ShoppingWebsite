@@ -1,17 +1,33 @@
 import React from "react";
 import { useState } from "react";
+import { Select } from "antd";
+const { Option } = Select;
 const ProductFormCreate = ({
   handleChange,
-  title,
-  description,
-  price,
-  quantity,
   handleSubmit,
-  colors,
-  brands,
-  color,
-  brand,
+  subcategory,
+  showSub,
+  Setvalues,
+  handleChangeCategory,
+  values,
+  // this subcategory is use state props coming from productCreate components
 }) => {
+  const {
+    title,
+    description,
+    price,
+    categories,
+    category,
+    Subcatergory,
+    shipping,
+    quantity,
+    images,
+    colors,
+    brands,
+    color,
+    brand,
+  } = values;
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -109,6 +125,44 @@ const ProductFormCreate = ({
             ))}
           </select>
         </div>
+
+        <div className="form-group">
+          <label>Catgories</label>
+          <select
+            name="category"
+            className="form-control"
+            onChange={handleChangeCategory}
+          >
+            <option>Please select</option>
+            {categories?.map((c) => (
+              <option className=" bg-secondary" key={c._id} value={c._id}>
+                {c.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        {/* this is subcategory once user clicked on the parent category then only based on the categpry we will them the subcategory */}
+        {showSub && (
+          <div>
+            <label>Sub Categories</label>
+            <Select
+              mode="multiple"
+              style={{ width: "100%" }}
+              placeholder="Please select"
+              value={Subcatergory}
+              onChange={(value) =>
+                Setvalues({ ...values, Subcatergory: value })
+              }
+            >
+              {subcategory.length &&
+                subcategory.map((s) => (
+                  <Option key={s._id} value={s._id}>
+                    {s.name}
+                  </Option>
+                ))}
+            </Select>
+          </div>
+        )}
 
         <button className="btn btn-outline-success" disabled={!color && !brand}>
           Create

@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 // import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import ProductFormCreate from "../../forms/productFormCreate";
 import createProduct from "../../functions/product";
+import { getCategory, getSubcategory } from "../../functions/category";
 
 const ProductCreate = () => {
   // this is protected route so i need to add the code to only access by admin.
@@ -15,7 +16,8 @@ const ProductCreate = () => {
 
   const [count, Setcount] = useState(5);
   const [state, setstate] = useState(false);
-
+  const [subcategory, Setsubcategory] = useState([]);
+  const [showSub, setShowSub] = useState(false);
   // this is protected route means only logged user can access.
   // using useeffect..
   useEffect(() => {
@@ -61,6 +63,7 @@ const ProductCreate = () => {
       };
     }
   }, [user, count, navigate, state]);
+
   //*********************************************************** */
   // creating a form for taking all the data that is going to save in the product modal.
 
@@ -69,17 +72,18 @@ const ProductCreate = () => {
     description: "",
     price: "",
     // categories: [],
-    // category: "",
-    // Subcatergory: [],
+    category: "",
+    Subcatergory: [],
     shipping: "",
     quantity: "",
-    images: [],
+    // images: [],
     colors: ["Black", "Brown", "Silver", "White", "Blue"],
     brands: ["Apple", "Samsung", "Microsoft", "Lenovo", "ASUS"],
     color: "",
     brand: "",
   };
   const [values, Setvalues] = useState(initialState);
+
   // destructure the item from value
   const {
     title,
@@ -96,6 +100,13 @@ const ProductCreate = () => {
     color,
     brand,
   } = values;
+
+  // useeffect to get all the categories from backend
+  useEffect(() => {
+    getCategory().then((res) => {
+      Setvalues({ ...values, categories: res.data });
+    });
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -120,8 +131,24 @@ const ProductCreate = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     Setvalues({ ...values, [name]: value });
-
     //
+  };
+  // creating a separate function for the category to the id of category once got the id we show the subcategory based on the id
+  const handleChangeCategory = (e) => {
+    e.preventDefault();
+    const { name, value } = e.target;
+    Setvalues({ ...values, subs: [], category: value });
+    // console.log(`${name} is clicked whose id is ${value}`);
+    // once user clicked i make a request ot backend to find the subcategory based on the parent category.
+    getSubcategory(value)
+      .then((res) => {
+        console.log(res);
+        Setsubcategory(res.data); // set into usestate .
+        setShowSub(true);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
   };
   return (
     <div className="container-fluid">
@@ -155,6 +182,13 @@ const ProductCreate = () => {
             brands={brands}
             title={title}
             shipping={shipping}
+            categories={categories}
+            handleChangeCategory={handleChangeCategory}
+            subcategory={subcategory}
+            showSub={showSub}
+            Setvalues={Setvalues}
+            Subcatergory={Subcatergory}
+            values={values}
           ></ProductFormCreate>
         </div>
       </div>

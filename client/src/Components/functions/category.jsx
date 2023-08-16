@@ -78,6 +78,17 @@ const updateCategory = async (slug, category, token) => {
     throw error;
   }
 };
+// this will give the subcategory based on the parent category id.
+const getSubcategory = async (Id) => {
+  try {
+    const response = await axios.get(
+      `${process.env.REACT_APP_ROUTE_API}/category/subcategory/${Id}`
+    );
+    return response; // Return the response data from the promise
+  } catch (error) {
+    throw error; // Re-throw the error to be caught in the calling code
+  }
+};
 
 // export all the function
 export {
@@ -86,4 +97,5 @@ export {
   getCategoryNames,
   createCatetogy,
   removeCategory,
+  getSubcategory,
 };

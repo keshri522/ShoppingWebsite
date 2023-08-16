@@ -8,6 +8,7 @@ const {
   update,
   remove,
   list,
+  getSubcatecory,
 } = require("../controllers/category");
 // niddlewares.
 const {
@@ -20,4 +21,5 @@ router.get("/categories", list); // public to all means if a user do not login h
 router.get("/category/:slug", read); // public can read or get any of the category based on the slug
 router.put("/category/:slug", authMiddleware, adminMiddleware, update); // admin can update any of the category based on the slug
 router.delete("/category/:slug", authMiddleware, adminMiddleware, remove); // admin can remove any of the category based on the slug.
+router.get("/category/subcategory/:_Id", getSubcatecory);
 module.exports = router;
