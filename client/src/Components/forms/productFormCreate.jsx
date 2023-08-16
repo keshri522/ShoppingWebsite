@@ -1,5 +1,5 @@
 import React from "react";
-
+import { useState } from "react";
 const ProductFormCreate = ({
   handleChange,
   title,
@@ -9,6 +9,8 @@ const ProductFormCreate = ({
   handleSubmit,
   colors,
   brands,
+  color,
+  brand,
 }) => {
   return (
     <div>
@@ -21,6 +23,9 @@ const ProductFormCreate = ({
             className="form-control"
             value={title}
             onChange={handleChange}
+            placeholder="Enter the Product title"
+            autoFocus
+            required
           />
         </div>
 
@@ -32,6 +37,8 @@ const ProductFormCreate = ({
             className="form-control"
             value={description}
             onChange={handleChange}
+            placeholder="Enter the Product description"
+            required
           />
         </div>
 
@@ -43,6 +50,8 @@ const ProductFormCreate = ({
             className="form-control"
             value={price}
             onChange={handleChange}
+            placeholder="Enter the Product Price"
+            required
           />
         </div>
 
@@ -52,10 +61,15 @@ const ProductFormCreate = ({
             name="shipping"
             className="form-control"
             onChange={handleChange}
+            required
           >
             <option>Please select</option>
-            <option value="No">No</option>
-            <option value="Yes">Yes</option>
+            <option className=" bg-secondary" value="No">
+              No
+            </option>
+            <option className=" bg-secondary" value="Yes">
+              Yes
+            </option>
           </select>
         </div>
 
@@ -67,6 +81,8 @@ const ProductFormCreate = ({
             className="form-control"
             value={quantity}
             onChange={handleChange}
+            placeholder="Enter the Product Quantity"
+            required
           />
         </div>
 
@@ -74,8 +90,8 @@ const ProductFormCreate = ({
           <label>Color</label>
           <select name="color" className="form-control" onChange={handleChange}>
             <option>Please select</option>
-            {colors.map((c) => (
-              <option key={c} value={c}>
+            {colors?.map((c) => (
+              <option className=" bg-secondary" key={c} value={c}>
                 {c}
               </option>
             ))}
@@ -86,15 +102,17 @@ const ProductFormCreate = ({
           <label>Brand</label>
           <select name="brand" className="form-control" onChange={handleChange}>
             <option>Please select</option>
-            {brands.map((b) => (
-              <option key={b} value={b}>
+            {brands?.map((b) => (
+              <option className=" bg-secondary" key={b} value={b}>
                 {b}
               </option>
             ))}
           </select>
         </div>
 
-        <button className="btn btn-outline-success">Create</button>
+        <button className="btn btn-outline-success" disabled={!color && !brand}>
+          Create
+        </button>
       </form>
     </div>
   );

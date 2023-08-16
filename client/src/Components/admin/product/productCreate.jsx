@@ -6,10 +6,13 @@ import axios from "axios"; // these are async function that are imported from th
 import { toast } from "react-toastify";
 // import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import ProductFormCreate from "../../forms/productFormCreate";
+import createProduct from "../../functions/product";
+
 const ProductCreate = () => {
   // this is protected route so i need to add the code to only access by admin.
   const navigate = useNavigate();
-  let user = useSelector((state) => state.rootreducer.user);
+  let user = useSelector((state) => state.rootreducer.user); // getting token from redux
+
   const [count, Setcount] = useState(5);
   const [state, setstate] = useState(false);
 
@@ -60,21 +63,23 @@ const ProductCreate = () => {
   }, [user, count, navigate, state]);
   //*********************************************************** */
   // creating a form for taking all the data that is going to save in the product modal.
-  const IntialState = {
+
+  const initialState = {
     title: "",
     description: "",
     price: "",
-    category: "",
-    Subcategory: [],
+    // categories: [],
+    // category: "",
+    // Subcatergory: [],
     shipping: "",
     quantity: "",
-    images: "",
-    colors: ["Black", "Brown", "Silver", "White", "Blue"], // these are set in the dropdown user select then the value will go to color and that will save in the backend
+    images: [],
+    colors: ["Black", "Brown", "Silver", "White", "Blue"],
     brands: ["Apple", "Samsung", "Microsoft", "Lenovo", "ASUS"],
     color: "",
     brand: "",
   };
-  const [value, Setvalue] = useState(IntialState);
+  const [values, Setvalues] = useState(initialState);
   // destructure the item from value
   const {
     title,
@@ -82,7 +87,7 @@ const ProductCreate = () => {
     price,
     categories,
     category,
-    Subcategory,
+    Subcatergory,
     shipping,
     quantity,
     images,
@@ -90,14 +95,32 @@ const ProductCreate = () => {
     brands,
     color,
     brand,
-  } = value;
+  } = values;
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // we nedd to call the createproduct function that will send all the product to the backend using api
+    createProduct(values, user.token)
+      .then((res) => {
+        console.log(res);
+        toast.success("Product Created Successfuly");
+        // empty all the fields once clicked the save
+        Setvalues(initialState);
+        navigate("/admin/products");
+      })
+      .catch((error) => {
+        if (error && error.response && error.response.status === 400) {
+          toast.error(error.response.data.error);
+        }
+      });
+
     //
   };
 
   const handleChange = (e) => {
+    const { name, value } = e.target;
+    Setvalues({ ...values, [name]: value });
+
     //
   };
   return (
@@ -117,7 +140,7 @@ const ProductCreate = () => {
               </h3>
             </div>
           ) : (
-            <h3 className="text-center text-primary"> Product page</h3>
+            <h3 className="text-center text-primary "> Product page</h3>
           )}
           {/* creating a form  */}
           <ProductFormCreate
@@ -127,8 +150,11 @@ const ProductCreate = () => {
             description={description}
             price={price}
             colors={colors}
+            color={color}
+            brand={brand}
             brands={brands}
             title={title}
+            shipping={shipping}
           ></ProductFormCreate>
         </div>
       </div>
