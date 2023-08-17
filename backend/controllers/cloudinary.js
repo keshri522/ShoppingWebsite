@@ -45,4 +45,4 @@ uploadImage = async (req, res) => {
 //   }
 // };
 
-module.exports = { removeImage, uploadImage };
+module.exports = uploadImage;
