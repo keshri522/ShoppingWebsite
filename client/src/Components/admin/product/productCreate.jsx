@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import ProductFormCreate from "../../forms/productFormCreate";
 import createProduct from "../../functions/product";
 import { getCategory, getSubcategory } from "../../functions/category";
-
+import FileUpload from "../../forms/FileUpload";
 const ProductCreate = () => {
   // this is protected route so i need to add the code to only access by admin.
   const navigate = useNavigate();
@@ -169,6 +169,7 @@ const ProductCreate = () => {
           ) : (
             <h3 className="text-center text-primary "> Product page</h3>
           )}
+          <FileUpload />
           {/* creating a form  */}
           <ProductFormCreate
             handleChange={handleChange}
