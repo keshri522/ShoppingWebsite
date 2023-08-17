@@ -76,14 +76,14 @@ const ProductCreate = () => {
     Subcatergory: [],
     shipping: "",
     quantity: "",
-    // images: [],
+    images: [],
     colors: ["Black", "Brown", "Silver", "White", "Blue"],
     brands: ["Apple", "Samsung", "Microsoft", "Lenovo", "ASUS"],
     color: "",
     brand: "",
   };
   const [values, Setvalues] = useState(initialState);
-
+  const [loading, Setloading] = useState(false); // for the condtional rndering of Upload file bttons
   // destructure the item from value
   const {
     title,
@@ -142,7 +142,7 @@ const ProductCreate = () => {
     // once user clicked i make a request ot backend to find the subcategory based on the parent category.
     getSubcategory(value)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         Setsubcategory(res.data); // set into usestate .
         setShowSub(true);
       })
@@ -169,7 +169,12 @@ const ProductCreate = () => {
           ) : (
             <h3 className="text-center text-primary "> Product page</h3>
           )}
-          <FileUpload />
+          <FileUpload
+            values={values}
+            Setvalues={Setvalues}
+            loading={loading}
+            Setloading={Setloading}
+          />
           {/* creating a form  */}
           <ProductFormCreate
             handleChange={handleChange}

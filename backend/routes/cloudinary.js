@@ -11,5 +11,5 @@ const {
 // routes
 
 router.post("/uploadimage", authMiddleware, adminMiddleware, uploadImage);
-router.post("/removeimage", authMiddleware, adminMiddleware, removeImage);
+// router.post("/removeimage", authMiddleware, adminMiddleware, removeImage);
 module.exports = router;
