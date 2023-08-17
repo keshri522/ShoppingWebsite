@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const router = express.Router(); // this is the common router no need to use app.get/post..
 //   conrollers
-const { createProduct, readProduct } = require("../controllers/product"); // import the Auth confunction from the repo.
+const { createProduct, listallProduct } = require("../controllers/product"); // import the Auth confunction from the repo.
 // niddlewares.
 const {
   adminMiddleware,
@@ -12,5 +12,5 @@ const {
 
 router.post("/product", authMiddleware, adminMiddleware, createProduct);
 
-router.get("/products", readProduct); // this is public route
+router.get("/products/:count", listallProduct); // this is public route use as a pagignation
 module.exports = router;

@@ -17,4 +17,18 @@ const createProduct = async (product, token) => {
     throw error; // Re-throw the error to be caught in the calling code
   }
 };
-export default createProduct;
+// create endpoint to get the product in the admin dashboard in terms of paginations..
+const getProductList = async (count) => {
+  try {
+    const get = await axios.get(
+      // not here count is the number in which we use pagination in database. to set the limit
+      `${process.env.REACT_APP_ROUTE_API}/products/${count}`,
+      { count: count }
+      //2nd parameter of axiox just for body
+    );
+    return get;
+  } catch (error) {
+    throw error;
+  }
+};
+export { getProductList, createProduct };

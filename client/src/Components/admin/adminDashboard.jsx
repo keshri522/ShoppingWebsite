@@ -12,6 +12,8 @@ const AdminDashBoard = () => {
   const [count, Setcount] = useState(5);
 
   const [state, setstate] = useState(false);
+  const [getProduct, SetgetProduct] = useState([]); // this is for the getting all the products from backend
+  const [loading, Setloading] = useState(false);
 
   // using useeffect..
   useEffect(() => {

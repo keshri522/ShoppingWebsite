@@ -6,7 +6,7 @@ import axios from "axios"; // these are async function that are imported from th
 import { toast } from "react-toastify";
 // import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import ProductFormCreate from "../../forms/productFormCreate";
-import createProduct from "../../functions/product";
+import { createProduct } from "../../functions/product";
 import { getCategory, getSubcategory } from "../../functions/category";
 import FileUpload from "../../forms/FileUpload";
 const ProductCreate = () => {

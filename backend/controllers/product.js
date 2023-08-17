@@ -44,9 +44,14 @@ const createProduct = async (req, res) => {
   }
 };
 // for the products to get request showing all the products ...
-const readProduct = async (req, res) => {
+const listallProduct = async (req, res) => {
+  let { count } = req.body;
   try {
-    let products = await Product.find({});
+    let products = await Product.find({})
+      .limit(parseInt(count)) // this will set the limit based on the count.. give only products
+      .populate("category") // this will give whole info of the category based on the id.
+      .populate("Subcatergory") // this will give us whole info of Subcatergory based on the id
+      .sort({ createdAt: -1 });
     if (products) {
       res.status(200).json(products);
     } else {
@@ -60,4 +65,4 @@ const readProduct = async (req, res) => {
 };
 
 // Export the function if needed
-module.exports = { createProduct, readProduct };
+module.exports = { createProduct, listallProduct };
