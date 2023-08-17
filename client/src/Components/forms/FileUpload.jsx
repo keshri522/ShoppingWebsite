@@ -96,7 +96,12 @@ const FileUpload = ({ loading, Setloading, values, Setvalues }) => {
       <div className="row">
         <label className="">
           {loading ? (
-            <LoadingOutlined className="text-sucess"></LoadingOutlined>
+            <h2 className="mx-2">
+              {" "}
+              <LoadingOutlined className="text-danger font"></LoadingOutlined>
+            </h2>
+          ) : values.images.length > 0 ? (
+            <h4 className="text-primary upload rounded">Upload More</h4>
           ) : (
             <h4 className="text-primary upload rounded">Upload file</h4>
           )}
