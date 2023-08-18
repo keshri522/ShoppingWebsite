@@ -31,4 +31,21 @@ const getProductList = async (count) => {
     throw error;
   }
 };
-export { getProductList, createProduct };
+// deleting the products
+const ProductDelete = async (slug, token) => {
+  try {
+    const response = await axios.delete(
+      `${process.env.REACT_APP_ROUTE_API}/deleteProducts/${slug}`,
+
+      {
+        headers: {
+          token: token,
+        },
+      }
+    );
+    return response; // Return the response data from the promise
+  } catch (error) {
+    throw error; // Re-throw the error to be caught in the calling code
+  }
+};
+export { getProductList, createProduct, ProductDelete };

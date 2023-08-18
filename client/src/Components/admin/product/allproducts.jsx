@@ -81,6 +81,9 @@ const AllProducts = () => {
       .catch((err) => {
         console.log(err);
       });
+  }; // creating a DeleteProducts functions
+  const DeleteProducts = (id) => {
+    console.liog(id);
   };
   return (
     <div className="container-fluid">
@@ -89,7 +92,7 @@ const AllProducts = () => {
           {user && user.role === "admin" && <AdminSidebar></AdminSidebar>}
         </div>
         {state ? (
-          <div className="mt-5">
+          <div className="mt-5 mx-auto">
             <h4 className="text-center text-secondary">
               Redirecting to home page {count}
             </h4>
@@ -107,7 +110,10 @@ const AllProducts = () => {
               <div className="row">
                 {getProduct?.map((products) => (
                   <div className="col-md-4 mt-3" key={products._id}>
-                    <AdminProductCard products={products}></AdminProductCard>
+                    <AdminProductCard
+                      products={products}
+                      SetgetProduct={SetgetProduct}
+                    ></AdminProductCard>
                   </div>
                 ))}
               </div>
