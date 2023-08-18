@@ -4,20 +4,22 @@ import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { ProductDelete } from "../../functions/product";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 //destructing the Meta from card
 const { Meta } = Card;
 const AdminProductCard = ({ products, SetgetProduct }) => {
-  console.log(products._id);
+  const navigate = useNavigate();
   let user = useSelector((state) => state.rootreducer.user);
   // we need to destructure the card or simply go with . notation..
-  const { title, description, images } = products;
+  const { title, description, images, slug } = products;
   // creating a function which will delete the products.
   const DeleteProducts = (product_id) => {
     console.log(product_id);
     // calling the delete api function
     ProductDelete(product_id, user.token)
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         SetgetProduct(res.data);
         toast.success("Deleted Sucessfully");
       })
@@ -39,7 +41,13 @@ const AdminProductCard = ({ products, SetgetProduct }) => {
         ></img>
       }
       actions={[
-        <EditOutlined className="text-warning"></EditOutlined>,
+        <EditOutlined
+          className="text-warning"
+          onClick={() => {
+            navigate(`/admin/product/${slug}`, { state: slug });
+          }}
+        />,
+
         <DeleteOutlined
           className="text-danger"
           onClick={() => {

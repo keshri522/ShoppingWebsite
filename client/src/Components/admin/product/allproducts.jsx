@@ -82,9 +82,7 @@ const AllProducts = () => {
         console.log(err);
       });
   }; // creating a DeleteProducts functions
-  const DeleteProducts = (id) => {
-    console.liog(id);
-  };
+
   return (
     <div className="container-fluid">
       <div className="row">

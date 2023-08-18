@@ -6,6 +6,7 @@ const {
   createProduct,
   listallProduct,
   deleteProducts,
+  getSingleproduct,
 } = require("../controllers/product"); // import the Auth confunction from the repo.
 // niddlewares.
 const {
@@ -23,4 +24,5 @@ router.delete(
   adminMiddleware,
   deleteProducts
 );
+router.get("/product/:slug", getSingleproduct);
 module.exports = router;

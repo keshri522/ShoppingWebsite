@@ -48,4 +48,16 @@ const ProductDelete = async (slug, token) => {
     throw error; // Re-throw the error to be caught in the calling code
   }
 };
-export { getProductList, createProduct, ProductDelete };
+// get the single product list based on the slug..
+const getSingleProduct = async (slug) => {
+  try {
+    const response = await axios.get(
+      // not here count is the number in which we use pagination in database. to set the limit
+      `${process.env.REACT_APP_ROUTE_API}/product/${slug}`
+    );
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+export { getProductList, createProduct, ProductDelete, getSingleProduct };

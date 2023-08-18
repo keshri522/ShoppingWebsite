@@ -14,6 +14,7 @@ import Subcategory from "./admin/Subcategory/subcategory";
 import UpdateSubcatgory from "./admin/Subcategory/updateSubcategory";
 import ProductCreate from "./admin/product/productCreate";
 import AllProducts from "./admin/product/allproducts";
+import ProductUpdate from "./admin/product/productUpdate";
 const Router = () => {
   return (
     <div>
@@ -62,6 +63,10 @@ const Router = () => {
         <Route
           path="admin/products"
           element={<AllProducts></AllProducts>}
+        ></Route>
+        <Route
+          path="admin/product/:slug"
+          element={<ProductUpdate></ProductUpdate>}
         ></Route>
       </Routes>
     </div>

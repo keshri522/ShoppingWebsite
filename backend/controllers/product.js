@@ -1,3 +1,4 @@
+const e = require("express");
 const Product = require("../model/product");
 const slugify = require("slugify");
 
@@ -65,11 +66,11 @@ const listallProduct = async (req, res) => {
 };
 // deleting a products form admin ..
 const deleteProducts = async (req, res) => {
-  console.log(req.params.slug);
+  // console.log(req.params.slug);
   try {
     let Deleteitem = await Product.findOneAndRemove({ _id: req.params.slug });
     if (Deleteitem) {
-      console.log("Item removed");
+      // console.log("Item removed");
     }
     // fetching all the products except the deleted one.
     const FetchProducts = await Product.find({ _id: { $ne: req.params.slug } });
@@ -79,10 +80,34 @@ const deleteProducts = async (req, res) => {
       res.status(404).send("product not found");
     }
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     res.status(400).send("Failed to delete products");
   }
 };
 
+// creating single product it return the product based on the slug ..
+const getSingleproduct = async (req, res) => {
+  try {
+    let { slug } = req.params; // using destructing  method
+    // need to find in Product collection
+    let product = await Product.find({ slug: slug })
+      .populate("Subcatergory")
+      .populate("category");
+    if (product) {
+      // console.log(product);
+      res.status(200).send(product);
+    } else {
+      res.status(404).send("Product not found");
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+};
 // Export the function if needed
-module.exports = { createProduct, listallProduct, deleteProducts };
+module.exports = {
+  createProduct,
+  listallProduct,
+  deleteProducts,
+  getSingleproduct,
+};
