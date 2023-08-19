@@ -169,33 +169,42 @@ const ProductCreate = () => {
           ) : (
             <h3 className="text-center text-primary "> Product page</h3>
           )}
-          <FileUpload
-            values={values}
-            Setvalues={Setvalues}
-            loading={loading}
-            Setloading={Setloading}
-          />
+          {user && user.token ? (
+            <FileUpload
+              values={values}
+              Setvalues={Setvalues}
+              loading={loading}
+              Setloading={Setloading}
+            />
+          ) : (
+            " "
+          )}
+
           {/* creating a form  */}
-          <ProductFormCreate
-            handleChange={handleChange}
-            handleSubmit={handleSubmit}
-            quantity={quantity}
-            description={description}
-            price={price}
-            colors={colors}
-            color={color}
-            brand={brand}
-            brands={brands}
-            title={title}
-            shipping={shipping}
-            categories={categories}
-            handleChangeCategory={handleChangeCategory}
-            subcategory={subcategory}
-            showSub={showSub}
-            Setvalues={Setvalues}
-            Subcatergory={Subcatergory}
-            values={values}
-          ></ProductFormCreate>
+          {user && user.token ? (
+            <ProductFormCreate
+              handleChange={handleChange}
+              handleSubmit={handleSubmit}
+              quantity={quantity}
+              description={description}
+              price={price}
+              colors={colors}
+              color={color}
+              brand={brand}
+              brands={brands}
+              title={title}
+              shipping={shipping}
+              categories={categories}
+              handleChangeCategory={handleChangeCategory}
+              subcategory={subcategory}
+              showSub={showSub}
+              Setvalues={Setvalues}
+              Subcatergory={Subcatergory}
+              values={values}
+            ></ProductFormCreate>
+          ) : (
+            " "
+          )}
         </div>
       </div>
     </div>

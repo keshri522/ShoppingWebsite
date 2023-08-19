@@ -104,10 +104,29 @@ const getSingleproduct = async (req, res) => {
     res.status(500).send(error);
   }
 };
+// update the product s
+const updateProducts = async (req, res) => {
+  try {
+    // if req.body.title is present we need to create the slug of the title
+    if (req.body.title) {
+      req.body.slug = slugify(req.body.title);
+    }
+    const update = await Product.findOneAndUpdate(
+      { slug: req.params.slug }, // here the slug come from req.params.slug not the body slug
+      req.body, // update the enitre body based on the slug
+      { new: true }
+    );
+    res.status(200).send(update);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(error.message);
+  }
+};
 // Export the function if needed
 module.exports = {
   createProduct,
   listallProduct,
   deleteProducts,
   getSingleproduct,
+  updateProducts,
 };

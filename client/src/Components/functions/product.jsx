@@ -60,4 +60,26 @@ const getSingleProduct = async (slug) => {
     throw error;
   }
 };
-export { getProductList, createProduct, ProductDelete, getSingleProduct };
+const updateProducts = async (product, token, slug) => {
+  try {
+    const response = await axios.put(
+      `${process.env.REACT_APP_ROUTE_API}/product/${slug}`,
+      product, //2nd parameter of axiox just for body
+      {
+        headers: {
+          token: token,
+        },
+      }
+    );
+    return response; // Return the response data from the promise
+  } catch (error) {
+    throw error; // Re-throw the error to be caught in the calling code
+  }
+};
+export {
+  getProductList,
+  createProduct,
+  ProductDelete,
+  getSingleProduct,
+  updateProducts,
+};

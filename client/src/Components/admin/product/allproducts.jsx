@@ -21,7 +21,7 @@ const AllProducts = () => {
   useEffect(() => {
     setstate(false);
     if (user && user.token) {
-      console.log(state);
+      // console.log(state);
       const config = {
         headers: {
           "Content-type": "application/json",
@@ -35,12 +35,12 @@ const AllProducts = () => {
           config // 3rd one is passed in the headers
         )
         .then((data) => {
-          console.log("Admin data response is", data);
+          // console.log("Admin data response is", data);
           setstate(false);
-          console.log(state);
+          // console.log(state);
         })
         .catch((error) => {
-          console.log("Admin route error", error);
+          // console.log("Admin route error", error);
           setstate(false);
         });
     }
@@ -75,7 +75,7 @@ const AllProducts = () => {
     getProductList(100)
       .then((res) => {
         SetgetProduct(res.data);
-        console.log(res.data);
+        // console.log(res.data);
         Setloading(false);
       })
       .catch((err) => {

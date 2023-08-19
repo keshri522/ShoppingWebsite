@@ -5,11 +5,12 @@ import AdminSidebar from "../../Navbar/adminSidebar";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { getSingleProduct } from "../../functions/product";
+import { getSingleProduct, updateProducts } from "../../functions/product";
 import { LoadingOutlined } from "@ant-design/icons";
 import { getSubcategory } from "../../functions/category";
 import ProductUpdateForm from "../../forms/productupdateform";
 import { getCategory } from "../../functions/category";
+import FileUpload from "../../forms/FileUpload";
 const ProductUpdate = () => {
   // with the help of useloaction we here got the slug coming from admin product card
   const location = useLocation();
@@ -20,6 +21,8 @@ const ProductUpdate = () => {
   const [state, setstate] = useState(false);
   const [categories, setCategories] = useState([]);
   const [subOptions, setSubOptions] = useState([]);
+  const [ArrayOfSubs, setArrayOfSubs] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
   //getting token from redux
   const user = useSelector((state) => state.rootreducer.user);
   // router
@@ -102,11 +105,20 @@ const ProductUpdate = () => {
   const getproducts = (slug) => {
     Setloading(true);
     getSingleProduct(slug)
-      .then((res) => {
+      .then((p) => {
         // console.log(res.data[0]);
         // setting the resdata to the initial state of the update form then make a update and send to backend for updating
-        Setvalues({ ...values, ...res.data[0] }); // it will set the intial state to res.data values
+        Setvalues({ ...values, ...p.data[0] }); // it will set the intial state to res.data values
         Setloading(false);
+        getSubcategory(p.data[0].category._id).then((res) => {
+          setSubOptions(res.data);
+        });
+        let arr = [];
+        p.data[0].Subcatergory.map((s) => {
+          arr.push(s._id);
+        });
+        // console.log("ARR", arr);
+        setArrayOfSubs((prev) => arr);
       })
       .catch((err) => {
         if (err && err.response && err.response.status === 404) {
@@ -116,6 +128,7 @@ const ProductUpdate = () => {
         }
       });
   };
+
   // this will load the categoties to show on select option
   const loadCategories = () =>
     getCategory().then((c) => {
@@ -124,6 +137,23 @@ const ProductUpdate = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    Setloading(true);
+    // sending the updated data  to the end points
+    values.Subcatergory = ArrayOfSubs;
+    values.category = selectedCategory ? selectedCategory : values.category;
+    // now calling our update uproducts api end points
+    updateProducts(values, user.token, slug)
+      .then((res) => {
+        // console.log(res);
+        Setloading(false);
+        toast.success(`${res.data.title} is Updated`);
+        // navigate to products page .
+        navigate("/admin/products");
+      })
+      .catch((err) => {
+        // console.log(err);
+        toast.err(`${err.response.data.message}`);
+      });
   };
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -135,18 +165,24 @@ const ProductUpdate = () => {
   const handleChangeCategory = (e) => {
     e.preventDefault();
     const { name, value } = e.target;
-    Setvalues({ ...values, subs: [], category: value });
+    Setvalues({ ...values, Subcatergory: [] });
     // console.log(`${name} is clicked whose id is ${value}`);
     // once user clicked i make a request ot backend to find the subcategory based on the parent category.
-    getSubcategory(value)
-      .then((res) => {
-        // console.log(res);
-        setSubOptions(res.data); // set into usestate .
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
+    setSelectedCategory(e.target.value);
+    getSubcategory(value).then((res) => {
+      // console.log(res);
+      setSubOptions(res.data); // set into usestate .
+    });
+
+    // if user clicks back to the original category
+    // show its sub categories in default
+    if (values.category._id === value) {
+      getproducts();
+    }
+    // clear old sub category ids
+    setArrayOfSubs([]);
   };
+
   return (
     <div className="container-fluid">
       <div className="row">
@@ -161,15 +197,26 @@ const ProductUpdate = () => {
               <LoadingOutlined className="text"></LoadingOutlined>
             </div>
           ) : (
-            <ProductUpdateForm
-              handleChange={handleChange}
-              handleSubmit={handleSubmit}
-              values={values}
-              Setvalues={Setvalues}
-              handleChangeCategory={handleChangeCategory}
-              categories={categories}
-              subOptions={subOptions}
-            ></ProductUpdateForm>
+            <div>
+              <FileUpload
+                values={values}
+                Setvalues={Setvalues}
+                loading={loading}
+                Setloading={Setloading}
+              />
+              <ProductUpdateForm
+                handleChange={handleChange}
+                handleSubmit={handleSubmit}
+                values={values}
+                Setvalues={Setvalues}
+                handleChangeCategory={handleChangeCategory}
+                categories={categories}
+                subOptions={subOptions}
+                ArrayOfSubs={ArrayOfSubs}
+                setArrayOfSubs={setArrayOfSubs}
+                selectedCategory={selectedCategory}
+              ></ProductUpdateForm>
+            </div>
           )}
 
           <hr />
