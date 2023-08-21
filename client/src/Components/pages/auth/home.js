@@ -13,7 +13,7 @@ const Home = () => {
   // this will give all the products to home page ..
   const loadProducts = () => {
     Setloading(true);
-    getProductList()
+    getProductList(6)
       .then((res) => {
         Setallproducts(res.data);
         Setloading(false);
