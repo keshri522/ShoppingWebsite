@@ -74,7 +74,7 @@ const AllProducts = () => {
   // this function will give the all the products
   const loadingProduct = () => {
     Setloading(true);
-    getProductList(4)
+    getProductList(100)
       .then((res) => {
         SetgetProduct(res.data);
         // console.log(res.data);

@@ -39,18 +39,25 @@ const Home = () => {
         )}
       </div>
       {/* showing all the product based on the api  */}
-      <di className="container">
-        <div className="row m-5 p-5">
-          {allproducts &&
-            allproducts.length > 0 &&
-            allproducts?.map((product) => (
-              <div className="col-md-4  " key={product._id}>
-                <SingleProduct
-                  product={product}
-                  Setallproducts={Setallproducts}
-                ></SingleProduct>
-              </div>
-            ))}
+      <di className="container-fluid">
+        <div className="row p-5">
+          <div className="col-md-2">
+            <h1>Hello</h1>
+          </div>
+          <div className="col">
+            <div className="row">
+              {allproducts &&
+                allproducts.length > 0 &&
+                allproducts?.map((product) => (
+                  <div className="col-md-4 mt-5 " key={product._id}>
+                    <SingleProduct
+                      product={product}
+                      Setallproducts={Setallproducts}
+                    ></SingleProduct>
+                  </div>
+                ))}
+            </div>
+          </div>
         </div>
       </di>
     </>

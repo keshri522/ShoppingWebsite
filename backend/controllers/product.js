@@ -123,24 +123,44 @@ const updateProducts = async (req, res) => {
     res.status(400).send(error.message);
   }
 };
-const ProductList = async (req, res) => {
-  const { sort, order, limit } = req.body;
+// this will give us the total number of products in the database ..
+const TotalProducts = async (req, res) => {
   try {
-    let data = await Product.find({})
-      .populate("Subcatergory")
-      .populate("category")
-      .sort([[sort, order]])
-      .limit(limit);
-    if (data) {
-      res.status(200).send(data);
+    let items = await Product.find({}).count();
+
+    if (items) {
+      res.status(200).json(items);
     } else {
-      res.status(400).send("Product not found");
+      res.status(404).json("No products found");
     }
-  } catch (err) {
-    console.log(err);
-    res.status(400).send(err);
+  } catch (error) {
+    res.status(400).json({
+      error: error.message,
+    });
   }
 };
+// using paginations
+const PaginatioProduct = async (req, res) => {
+  const { sort, order, page } = req.body;
+  const perPage = 3; // shows a limit how many pages we want to show on client
+  const currentPage = page || 1; // its show the product  if the current page===0 then skip will also zero ..
+  const find = (currentPage - 1) * perPage;
+  try {
+    let pagination = await Product.find({})
+      .skip(find)
+      .populate("category")
+      .populate("Subcatergory")
+      .sort([[sort, order]])
+      .limit(perPage)
+      .count();
+    res.status(200).send(pagination);
+    console.log(pagination);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(error);
+  }
+};
+
 // Export the function if needed
 module.exports = {
   createProduct,
@@ -148,5 +168,6 @@ module.exports = {
   deleteProducts,
   getSingleproduct,
   updateProducts,
-  ProductList,
+  TotalProducts,
+  PaginatioProduct,
 };

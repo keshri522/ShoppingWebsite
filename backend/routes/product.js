@@ -8,7 +8,8 @@ const {
   deleteProducts,
   getSingleproduct,
   updateProducts,
-  ProductList,
+  TotalProducts,
+  PaginatioProduct,
 } = require("../controllers/product"); // import the Auth confunction from the repo.
 // niddlewares.
 const {
@@ -18,7 +19,8 @@ const {
 // routes
 
 router.post("/product", authMiddleware, adminMiddleware, createProduct);
-
+router.post("/products/pagination", PaginatioProduct);
+router.get("/products/total", TotalProducts);
 router.get("/products/:count", listallProduct); // this is public route use as a pagignation
 router.delete(
   "/deleteProducts/:slug",
@@ -27,8 +29,9 @@ router.delete(
   deleteProducts
 );
 router.get("/product/:slug", getSingleproduct);
+
 router.put("/product/:slug", authMiddleware, adminMiddleware, updateProducts);
 // this is for sending the data from frontend to backend .. to show based on the latest arrivals
-router.post("/products", ProductList);
+
 router.get("/products/:count", listallProduct);
 module.exports = router;
