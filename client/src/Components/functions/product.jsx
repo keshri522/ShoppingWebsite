@@ -76,10 +76,41 @@ const updateProducts = async (product, token, slug) => {
     throw error; // Re-throw the error to be caught in the calling code
   }
 };
+
+// get the single product list based on the slug..
+const getTotalProduct = async () => {
+  try {
+    const response = await axios.get(
+      // not here count is the number in which we use pagination in database. to set the limit
+      `${process.env.REACT_APP_ROUTE_API}/products/total`
+    );
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+// this is for the pagination in the frontend to show the data based on the page nubmber.
+
+const getPaginationProducts = async (sort, order, page) => {
+  try {
+    const get = await axios.post(
+      // not here count is the number in which we use pagination in database. to set the limit
+      `${process.env.REACT_APP_ROUTE_API}/products/pagination/`,
+      { sort: sort, order: order, page: page }
+      //2nd parameter of axiox just for body
+    );
+    return get;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export {
   getProductList,
   createProduct,
   ProductDelete,
   getSingleProduct,
   updateProducts,
+  getTotalProduct,
+  getPaginationProducts,
 };

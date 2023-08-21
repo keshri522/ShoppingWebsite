@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Card } from "antd";
 import { Link } from "react-router-dom";
 import { EyeOutlined, ShoppingCartOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 const { Meta } = Card; // destructing the Meta object from the Card compoentest
 const SingleProduct = ({ product, Setallproducts }) => {
+  const navigate = useNavigate();
   const { title, description, images, slug } = product; // destruting the objects from the item
   return (
     <Card
@@ -15,11 +17,17 @@ const SingleProduct = ({ product, Setallproducts }) => {
         ></img>
       }
       actions={[
-        <Link to={`/product/${slug}`}>
+        <Link to={`/product/${slug}`} state={{ slug: slug }}>
           <EyeOutlined className="text-warning"></EyeOutlined>
           <br />
           view cart
         </Link>,
+        // <EyeOutlined
+        //   className="text-warning"
+        //   onClick={() => {
+        //     navigate(`/product/${slug}`, { slug: slug });
+        //   }}
+        // />,
 
         <Link>
           <ShoppingCartOutlined
@@ -35,7 +43,7 @@ const SingleProduct = ({ product, Setallproducts }) => {
       <Meta
         title={title}
         description={`${description && description.substring(0, 50)}.....`}
-        className="text-secondary"
+        style={{ fontWeight: "bold" }}
       ></Meta>
     </Card>
   );

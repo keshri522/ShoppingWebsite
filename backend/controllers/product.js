@@ -142,7 +142,7 @@ const TotalProducts = async (req, res) => {
 // using paginations
 const PaginatioProduct = async (req, res) => {
   const { sort, order, page } = req.body;
-  const perPage = 3; // shows a limit how many pages we want to show on client
+  const perPage = 6; // shows a limit how many pages we want to show on client
   const currentPage = page || 1; // its show the product  if the current page===0 then skip will also zero ..
   const find = (currentPage - 1) * perPage;
   try {
@@ -151,10 +151,11 @@ const PaginatioProduct = async (req, res) => {
       .populate("category")
       .populate("Subcatergory")
       .sort([[sort, order]])
-      .limit(perPage)
-      .count();
-    res.status(200).send(pagination);
-    console.log(pagination);
+      .limit(perPage);
+
+    if (pagination) {
+      res.status(200).json(pagination);
+    }
   } catch (error) {
     console.log(error);
     res.status(400).send(error);

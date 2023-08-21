@@ -1,20 +1,38 @@
 import React, { useState, useEffect } from "react";
-import { getProductList } from "../../functions/product";
+import {
+  getTotalProduct,
+  getPaginationProducts,
+} from "../../functions/product";
 import SingleProduct from "../../admin/cards/SingleProduct";
 import { LoadingOutlined } from "@ant-design/icons";
 import Typewrittereffect from "../../admin/cards/typewrittereffect";
+import { Pagination } from "antd";
+
 const Home = () => {
   const [allproducts, Setallproducts] = useState([]);
+
   const [loading, Setloading] = useState(false);
+  // store the total product in usestate
+  const [totalProuct, SettotalProduct] = useState(0);
+  // once user click on the pagination i want to send the page number also in backend based on that skip will workd
+  const [page, Setpage] = useState(1);
   // call the use effret hook to render the api in each once mounting.
   useEffect(() => {
     loadProducts();
+  }, [page]); // when ever our pages changes the use effect will run
+  // this will give the total number of products present in db
+  useEffect(() => {
+    getTotalProduct().then((res) => {
+      SettotalProduct(res.data);
+    });
   }, []);
+
   // this will give all the products to home page ..
   const loadProducts = () => {
     Setloading(true);
-    getProductList(6)
+    getPaginationProducts("createdAt", "desc", page)
       .then((res) => {
+        // console.log(res);
         Setallproducts(res.data);
         Setloading(false);
       })
@@ -23,6 +41,7 @@ const Home = () => {
         Setloading(false);
       });
   };
+
   return (
     <>
       <div className="jumbotron">
@@ -39,7 +58,7 @@ const Home = () => {
         )}
       </div>
       {/* showing all the product based on the api  */}
-      <di className="container-fluid">
+      <div className="container-fluid">
         <div className="row p-5">
           <div className="col-md-2">
             <h1>Hello</h1>
@@ -59,7 +78,14 @@ const Home = () => {
             </div>
           </div>
         </div>
-      </di>
+      </div>
+      {/* this is pagination coming from ant desgin onchang if we change the pagination button it will increase or decrease the value by one based on that we are sending the page in backend */}
+      <Pagination
+        current={page}
+        total={Math.ceil(totalProuct / 6) * 10}
+        onChange={(value) => Setpage(value)}
+        className="text-center p-3 mb-5"
+      ></Pagination>
     </>
   );
 };
