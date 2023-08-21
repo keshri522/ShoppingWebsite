@@ -15,7 +15,7 @@ const AdminProductCard = ({ products, SetgetProduct }) => {
   const { title, description, images, slug } = products;
   // creating a function which will delete the products.
   const DeleteProducts = (product_id) => {
-    console.log(product_id);
+    // console.log(product_id);
     // calling the delete api function
     ProductDelete(product_id, user.token)
       .then((res) => {
