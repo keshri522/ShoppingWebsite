@@ -29,7 +29,7 @@ const Categorylist = () => {
     categorylist?.map((item) => (
       <div className="col-md-3">
         <Link to={`/category/${item.slug}`} style={{ textDecoration: "none" }}>
-          <div key={item._id} className="btn btn-info m-3 btn-lg btn-block">
+          <div key={item._id} className="btn btn-info m-3 btn-md btn-block">
             {item.name}
           </div>
         </Link>

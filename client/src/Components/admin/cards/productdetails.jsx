@@ -39,7 +39,7 @@ const Productdetails = ({ product }) => {
             {Subcatergory.map((items, index) => (
               <Link
                 key={items._id}
-                to={`/Subcatergory/${Subcatergory[index].slug}`}
+                to={`/subcategory/${Subcatergory[index].slug}`}
                 style={{ textDecoration: "none" }}
               >
                 {items.name}

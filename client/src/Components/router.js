@@ -17,6 +17,7 @@ import AllProducts from "./admin/product/allproducts";
 import ProductUpdate from "./admin/product/productUpdate";
 import ShowProductDetails from "./pages/auth/showproductsdetails";
 import Categoryhome from "./pages/category/categoryhome";
+import Subcategoryhome from "./pages/subcategory/subcategoryhome";
 const Router = () => {
   return (
     <div>
@@ -77,6 +78,10 @@ const Router = () => {
         <Route
           path="category/:slug"
           element={<Categoryhome></Categoryhome>}
+        ></Route>
+        <Route
+          path="subcategory/:slug"
+          element={<Subcategoryhome></Subcategoryhome>}
         ></Route>
       </Routes>
     </div>

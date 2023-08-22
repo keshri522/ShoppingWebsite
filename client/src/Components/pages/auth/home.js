@@ -8,6 +8,7 @@ import { LoadingOutlined } from "@ant-design/icons";
 import Typewrittereffect from "../../admin/cards/typewrittereffect";
 import { Pagination } from "antd";
 import Categorylist from "../../category/categorylist";
+import Subcategorylist from "../../Subcategpry/subcategory";
 const Home = () => {
   const [allproducts, Setallproducts] = useState([]);
 
@@ -44,7 +45,7 @@ const Home = () => {
 
   return (
     <>
-      <div className="jumbotron">
+      <div className="jumbotron p-4">
         {loading ? (
           <h1 className=" text-danger text-center   ">
             <LoadingOutlined></LoadingOutlined>
@@ -89,6 +90,9 @@ const Home = () => {
 
       <h4 className="text-center text-primary jumbotron p-3 ">Categories</h4>
       <Categorylist></Categorylist>
+
+      <h4 className="text-center text-primary jumbotron p-3 ">Subcategories</h4>
+      <Subcategorylist></Subcategorylist>
     </>
   );
 };

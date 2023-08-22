@@ -54,6 +54,9 @@
   object-fit: cover;
   height: 600px;
 }
+.block {
+  display: block;
+}
 @media (max-width: 870px) {
   .subcategory-list {
     display: flex;

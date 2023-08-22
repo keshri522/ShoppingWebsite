@@ -1,5 +1,6 @@
 // import catergory modal first
 const Subategory = require("../model/subcategory");
+const Product = require("../model/product");
 // import slugigy ..
 const slugify = require("slugify"); // it will create automatic slugs based on req.body data
 const create = async (req, res) => {
@@ -26,7 +27,14 @@ const read = async (req, res) => {
     // note here slug is coming from frontend like req.params.slug in slug we send the category from frontend
     const findOne = await Subategory.findOne({ slug: req.params.slug });
     if (findOne) {
-      res.status(200).send(findOne);
+      // res.status(200).send(findOne);
+      let subproducts = await Product.find({
+        Subcatergory: findOne._id,
+      }).populate("Subcatergory"); // this will give the entire info of subcategory
+      res.status(200).json({
+        Subcategory: findOne,
+        SubCategoryProucts: subproducts,
+      });
     } else {
       throw new Error("subcategory not found");
     }
