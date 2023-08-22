@@ -39,4 +39,24 @@
   font-size: 40px;
   font-weight: bold;
 }
-/* y */
+/* for the product list details for li and ui items */
+
+.li {
+  list-style: none;
+}
+.flex {
+  display: flex;
+}
+.subcategory-list {
+  font-weight: bold;
+}
+.slide {
+  object-fit: cover;
+  height: 600px;
+}
+@media (max-width: 870px) {
+  .subcategory-list {
+    display: flex;
+    flex-direction: column;
+  }
+}

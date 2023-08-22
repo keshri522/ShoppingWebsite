@@ -16,6 +16,7 @@ import ProductCreate from "./admin/product/productCreate";
 import AllProducts from "./admin/product/allproducts";
 import ProductUpdate from "./admin/product/productUpdate";
 import ShowProductDetails from "./pages/auth/showproductsdetails";
+
 const Router = () => {
   return (
     <div>

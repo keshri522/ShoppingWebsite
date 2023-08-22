@@ -60,7 +60,7 @@ const Home = () => {
       {/* showing all the product based on the api  */}
       <div className="container-fluid">
         <div className="row p-5">
-          <div className="col-md-2">
+          <div className="col-md-1">
             <h1>Hello</h1>
           </div>
           <div className="col">
@@ -68,7 +68,7 @@ const Home = () => {
               {allproducts &&
                 allproducts.length > 0 &&
                 allproducts?.map((product) => (
-                  <div className="col-md-4 mt-5 " key={product._id}>
+                  <div className="col-md-4 mb-4 " key={product._id}>
                     <SingleProduct
                       product={product}
                       Setallproducts={Setallproducts}
