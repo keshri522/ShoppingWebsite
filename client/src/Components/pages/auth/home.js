@@ -7,7 +7,7 @@ import SingleProduct from "../../admin/cards/SingleProduct";
 import { LoadingOutlined } from "@ant-design/icons";
 import Typewrittereffect from "../../admin/cards/typewrittereffect";
 import { Pagination } from "antd";
-
+import Categorylist from "../../category/categorylist";
 const Home = () => {
   const [allproducts, Setallproducts] = useState([]);
 
@@ -86,6 +86,9 @@ const Home = () => {
         onChange={(value) => Setpage(value)}
         className="text-center p-3 mb-5"
       ></Pagination>
+
+      <h4 className="text-center text-primary jumbotron p-3 ">Categories</h4>
+      <Categorylist></Categorylist>
     </>
   );
 };
