@@ -2,21 +2,22 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { SearchOutlined } from "@ant-design/icons";
+
 import { searchQuery } from "../Redux/reducers/searchreducers";
 const Searchform = () => {
   const [track, Settrack] = useState();
   const dispatch = useDispatch(); // for dispatching the action into store..
   const SearchQuery = useSelector((state) => state.rootreducer.text); // this will give the text from redux..
   const navigate = useNavigate();
-
+  //   console.log(SearchQuery);
   // some function onchange and handlesubmit
 
   const handleChange = (e) => {
     //sending the value to redux text state..
     e.preventDefault();
-    Settrack(e.target.value);
+
     dispatch(searchQuery({ text: e.target.value }));
+    Settrack(e.target.value);
   };
 
   const handlesubmit = (e) => {

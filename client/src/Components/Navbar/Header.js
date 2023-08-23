@@ -8,6 +8,7 @@ import {
   LogoutOutlined,
   GithubOutlined,
   LinkedinOutlined,
+  ShoppingOutlined,
 } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -61,6 +62,12 @@ const Header = () => {
             Home
           </Link>
         </Item>
+        <Item key="Shop" icon={<ShoppingOutlined />}>
+          <Link to="/shop" style={linkStyle}>
+            Shop
+          </Link>
+        </Item>
+
         {/* conditionally rendering the button based on the user present or not */}
         {userData && (
           <SubMenu

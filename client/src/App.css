@@ -57,6 +57,12 @@
 .block {
   display: block;
 }
+.size {
+  font-size: 150px;
+  color: green;
+  align-items: center;
+}
+
 @media (max-width: 870px) {
   .subcategory-list {
     display: flex;

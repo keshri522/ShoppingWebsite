@@ -104,6 +104,18 @@ const getPaginationProducts = async (sort, order, page) => {
     throw error;
   }
 };
+// post the search to the routes
+const fetchSearch = async (arg) => {
+  try {
+    const response = await axios.post(
+      `${process.env.REACT_APP_ROUTE_API}/search/filter`,
+      arg //2nd parameter of axiox just for body
+    );
+    return response; // Return the response data from the promise
+  } catch (error) {
+    throw error; // Re-throw the error to be caught in the calling code
+  }
+};
 
 export {
   getProductList,
@@ -113,4 +125,5 @@ export {
   updateProducts,
   getTotalProduct,
   getPaginationProducts,
+  fetchSearch,
 };
