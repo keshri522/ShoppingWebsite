@@ -174,6 +174,22 @@ const handleQuerySearch = async (req, res, query) => {
     res.status(400).send(error);
   }
 };
+
+// helper function for the category
+const FindCategory = async (req, res, category) => {
+  try {
+    console.log(category);
+    let products = await Product.find({ category: category });
+    if (products) {
+      res.status(200).json(products);
+    } else {
+      res.status(404).json("Product not found");
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(400).json(error);
+  }
+};
 // helper function for the Price
 const handlePrice = async (req, res, price) => {
   console.log("Price is ", price);
@@ -194,7 +210,7 @@ const handlePrice = async (req, res, price) => {
 };
 // FILTERING AND SEARCHING OF PRODUCTS
 const searchProducts = async (req, res) => {
-  const { query, price } = req.body; // based on the data user send from fronted it may color ,category ,brand
+  const { query, price, category } = req.body; // based on the data user send from fronted it may color ,category ,brand
   // i need to create helper funtin based on th req.body..
 
   if (query) {
@@ -203,6 +219,10 @@ const searchProducts = async (req, res) => {
   // if price is coming in body in the form of array
   if (price !== undefined) {
     await handlePrice(req, res, price);
+  }
+  // this is for the category by search
+  if (category) {
+    await FindCategory(req, res, category);
   }
 };
 
