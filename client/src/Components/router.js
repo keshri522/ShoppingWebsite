@@ -19,6 +19,7 @@ import ShowProductDetails from "./pages/auth/showproductsdetails";
 import Categoryhome from "./pages/category/categoryhome";
 import Subcategoryhome from "./pages/subcategory/subcategoryhome";
 import Shop from "./pages/auth/shop";
+
 const Router = () => {
   return (
     <div>

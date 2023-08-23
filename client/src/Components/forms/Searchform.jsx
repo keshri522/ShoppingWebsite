@@ -5,9 +5,9 @@ import { toast } from "react-toastify";
 
 import { searchQuery } from "../Redux/reducers/searchreducers";
 const Searchform = () => {
-  const [track, Settrack] = useState();
   const dispatch = useDispatch(); // for dispatching the action into store..
   const SearchQuery = useSelector((state) => state.rootreducer.text); // this will give the text from redux..
+  console.log(SearchQuery.text);
   const navigate = useNavigate();
   //   console.log(SearchQuery);
   // some function onchange and handlesubmit
@@ -15,20 +15,17 @@ const Searchform = () => {
   const handleChange = (e) => {
     //sending the value to redux text state..
     e.preventDefault();
-
     dispatch(searchQuery({ text: e.target.value }));
-    Settrack(e.target.value);
   };
-
   const handlesubmit = (e) => {
-    Settrack(e.target.value);
     e.preventDefault();
-    if (track.length > 0) {
+    if (SearchQuery.text.length > 0) {
       navigate(`/shop?${SearchQuery.text}`);
     } else {
-      toast.error("Cannot Search product with empty value");
+      toast.error("Cannot Search product with an empty value");
     }
   };
+
   return (
     <form className="form-inline my-2 my-lg-0" onSubmit={handlesubmit}>
       <input
@@ -41,7 +38,7 @@ const Searchform = () => {
       <button
         className="btn btn-sm btn-secondary"
         onClick={handlesubmit}
-        disabled={!track}
+        disabled={!SearchQuery.text}
       >
         Search
       </button>

@@ -11,7 +11,7 @@ const Shop = () => {
 
   const [product, Setproduct] = useState([]);
   const [loading, Setloading] = useState(false);
-  const [state, setState] = useState();
+
   // using useffect to show all the products based on the count
   useEffect(() => {
     Getproduct();
