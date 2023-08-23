@@ -10,6 +10,7 @@ const {
   updateProducts,
   TotalProducts,
   PaginatioProduct,
+  searchProducts,
 } = require("../controllers/product"); // import the Auth confunction from the repo.
 // niddlewares.
 const {
@@ -34,4 +35,7 @@ router.put("/product/:slug", authMiddleware, adminMiddleware, updateProducts);
 // this is for sending the data from frontend to backend .. to show based on the latest arrivals
 
 router.get("/products/:count", listallProduct);
+// this is routes where we use all the filters and search
+// FILTERING AND SEARCHING
+router.post("/search/filter", searchProducts);
 module.exports = router;

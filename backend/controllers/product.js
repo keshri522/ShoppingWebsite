@@ -162,6 +162,28 @@ const PaginatioProduct = async (req, res) => {
   }
 };
 
+//  HELPER FUNCTION
+const handleQuerySearch = async (req, res, query) => {
+  try {
+    let Search = await Product.find({ $text: { $search: query } })
+      .populate("category")
+      .populate("Subcatergory");
+    res.status(200).json(Search);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(error);
+  }
+};
+// FILTERING AND SEARCHING OF PRODUCTS
+const searchProducts = async (req, res) => {
+  const { query } = req.body; // based on the data user send from fronted it may color ,category ,brand
+  // i need to create helper funtin based on th req.body..
+
+  if (query) {
+    await handleQuerySearch(req, res, query);
+  }
+};
+
 // Export the function if needed
 module.exports = {
   createProduct,
@@ -171,4 +193,5 @@ module.exports = {
   updateProducts,
   TotalProducts,
   PaginatioProduct,
+  searchProducts,
 };
