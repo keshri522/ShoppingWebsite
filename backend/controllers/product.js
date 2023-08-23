@@ -174,13 +174,35 @@ const handleQuerySearch = async (req, res, query) => {
     res.status(400).send(error);
   }
 };
+// helper function for the Price
+const handlePrice = async (req, res, price) => {
+  console.log("Price is ", price);
+  try {
+    let products = await Product.find({
+      price: { $gte: price[0], $lte: price[1] },
+    })
+      .populate("category")
+      .populate("Subcatergory");
+
+    if (price) {
+      res.status(200).json(products);
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(400).json(error);
+  }
+};
 // FILTERING AND SEARCHING OF PRODUCTS
 const searchProducts = async (req, res) => {
-  const { query } = req.body; // based on the data user send from fronted it may color ,category ,brand
+  const { query, price } = req.body; // based on the data user send from fronted it may color ,category ,brand
   // i need to create helper funtin based on th req.body..
 
   if (query) {
     await handleQuerySearch(req, res, query);
+  }
+  // if price is coming in body in the form of array
+  if (price !== undefined) {
+    await handlePrice(req, res, price);
   }
 };
 

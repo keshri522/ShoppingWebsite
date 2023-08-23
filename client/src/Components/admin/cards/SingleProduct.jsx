@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 const { Meta } = Card; // destructing the Meta object from the Card compoentest
 const SingleProduct = ({ product, Setallproducts }) => {
   const navigate = useNavigate();
-  const { title, description, images, slug } = product; // destruting the objects from the item
+  const { title, description, images, slug, price } = product; // destruting the objects from the item
   return (
     <Card
       cover={
@@ -41,7 +41,7 @@ const SingleProduct = ({ product, Setallproducts }) => {
     >
       {/* i want to show the description only of 50 char. */}
       <Meta
-        title={title}
+        title={`${title}- $${price}`}
         description={`${description && description.substring(0, 50)}.....`}
         style={{ fontWeight: "bold" }}
       ></Meta>

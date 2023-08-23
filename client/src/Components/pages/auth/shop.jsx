@@ -4,15 +4,20 @@ import { getProductList } from "../../functions/product";
 import SingleProduct from "../../admin/cards/SingleProduct";
 import { LoadingOutlined } from "@ant-design/icons";
 import { fetchSearch } from "../../functions/product";
-
+import { Menu, Slider } from "antd";
+import { DollarOutlined } from "@ant-design/icons";
+import { searchQuery } from "../../Redux/reducers/searchreducers";
+const { SubMenu, ItemGroup } = Menu; //destructure
 const Shop = () => {
   // getting the data from the redux
   const SearchQuery = useSelector((state) => state.rootreducer.text); // this will give the text from redux..
-
+  const dispatch = useDispatch();
   const [product, Setproduct] = useState([]);
   const [loading, Setloading] = useState(false);
-
+  const [price, Setprice] = useState([0, 0]);
+  const [ok, Setok] = useState(false);
   // using useffect to show all the products based on the count
+  // 1 load default products
   useEffect(() => {
     Getproduct();
   }, []);
@@ -23,7 +28,7 @@ const Shop = () => {
       Setloading(false);
     });
   };
-
+  //  2 search the product
   // making reqquest to the backend based on the data coming from redux store..
   useEffect(() => {
     // to make a delay of some seconds we use settimeout
@@ -49,15 +54,50 @@ const Shop = () => {
       Setloading(false);
     }
   };
-
+  // 3 search or filter the products based on price
+  useEffect(() => {
+    loadPrice({ price: price });
+  }, [ok]);
+  const loadPrice = (arg) => {
+    Setloading(true);
+    fetchSearch(arg).then((res) => {
+      Setproduct(res.data);
+      Setloading(false);
+    });
+  };
+  // function for
+  const handleSlider = (value) => {
+    // first we need to remove the previos redux store to empty
+    dispatch(searchQuery({ text: "" }));
+    Setprice(value);
+    //delaying
+    setTimeout(() => {
+      Setok(!ok);
+    }, 400);
+  };
   return (
     <>
       <div className="container-fluid">
         <div className="row">
-          <div className="col-md-2">
-            <p>Search/filter</p>
+          <div className="col-md-3 pt-2">
+            <h4>Search/filter</h4>
+            <hr />
+            <Menu mode="inline" defaultOpenKeys={["1", "2"]}>
+              <SubMenu key="1" title={<span className="h6">Price</span>}>
+                <div>
+                  <Slider
+                    className="ml-4 mr-4"
+                    tipFormatter={(v) => `$${v}`}
+                    range
+                    value={price}
+                    onChange={handleSlider}
+                    max="7000"
+                  ></Slider>
+                </div>
+              </SubMenu>
+            </Menu>
           </div>
-          <div className="col-md-10">
+          <div className="col-md-9 pt-2">
             {loading ? (
               <h4 className="text-danger text-center mt-5">
                 <LoadingOutlined className="size my-auto"></LoadingOutlined>
