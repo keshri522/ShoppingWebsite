@@ -9,7 +9,7 @@ const SearchReducers = createSlice({
   reducers: {
     // reduceers can not make update directly in the state first make the copy of orgianl state using spread operator then push the actions
     searchQuery: (state, action) => {
-      return { ...state, ...action.payload };
+      state.text = action.payload.text;
     },
   },
 });

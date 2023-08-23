@@ -14,6 +14,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../firbase";
 import { loggedInUser } from "../Redux/reducers/userReducers";
 import { useDispatch } from "react-redux";
+import Searchform from "../forms/Searchform";
 const { SubMenu, Item } = Menu;
 const Header = () => {
   // taking data from loggedInuser redux store..
@@ -53,7 +54,7 @@ const Header = () => {
         onClick={handleClick}
         selectedKeys={[current]}
         mode="horizontal"
-        style={{ backgroundColor: "#fae3b7" }}
+        style={{ backgroundColor: "white" }}
       >
         <Item key="home" icon={<AppstoreOutlined />}>
           <Link to="/" style={linkStyle}>
@@ -128,6 +129,9 @@ const Header = () => {
             ></GithubOutlined>
           </Link>
         </div>
+        <span>
+          <Searchform className="p-2"></Searchform>
+        </span>
       </Menu>
     </>
   );
