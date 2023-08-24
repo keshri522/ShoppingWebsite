@@ -16,6 +16,7 @@ import { auth } from "../firbase";
 import { loggedInUser } from "../Redux/reducers/userReducers";
 import { useDispatch } from "react-redux";
 import Searchform from "../forms/Searchform";
+import { searchQuery } from "../Redux/reducers/searchreducers";
 const { SubMenu, Item } = Menu;
 const Header = () => {
   // taking data from loggedInuser redux store..
@@ -46,9 +47,10 @@ const Header = () => {
     // update the redux state to null..
     dispatch(loggedInUser(null));
     // navigate to login page
-    navigate("/login");
+    dispatch(searchQuery({ text: "" }));
+    navigate("/");
   };
-
+  // dispatch(loggedInUser(null));
   return (
     <>
       <Menu
@@ -62,11 +64,14 @@ const Header = () => {
             Home
           </Link>
         </Item>
-        <Item key="Shop" icon={<ShoppingOutlined />}>
-          <Link to="/shop" style={linkStyle}>
-            Shop
-          </Link>
-        </Item>
+        {/* this will show only there are no user means home page or if user===not admin */}
+        {(!userData || userData.role === "subscriber") && (
+          <Item key="Shop" icon={<ShoppingOutlined />}>
+            <Link to="/shop" style={linkStyle}>
+              Shop
+            </Link>
+          </Item>
+        )}
 
         {/* conditionally rendering the button based on the user present or not */}
         {userData && (
@@ -85,6 +90,7 @@ const Header = () => {
                 </Link>
               </Item>
             )}
+
             {userData && userData.role === "admin" && (
               <Item className="text-primary">
                 <Link to="/admin/dashboard" style={linkStyle}>
@@ -128,7 +134,6 @@ const Header = () => {
               className="mx-3 right"
             ></LinkedinOutlined>
           </Link>
-
           <Link to="https://github.com/keshri522" target="_main">
             <GithubOutlined
               style={{ fontSize: "25px", color: "#000" }}
@@ -136,9 +141,11 @@ const Header = () => {
             ></GithubOutlined>
           </Link>
         </div>
-        <span>
-          <Searchform className="p-2"></Searchform>
-        </span>
+        {(!userData || userData.role === "subscriber") && (
+          <Item style={linkStyle}>
+            <Searchform className="p-2"></Searchform>
+          </Item>
+        )}
       </Menu>
     </>
   );

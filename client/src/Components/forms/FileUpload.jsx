@@ -17,7 +17,8 @@ const FileUpload = ({ loading, Setloading, values, Setvalues }) => {
         file,
         720,
         720,
-        "JPEG",
+        // "JPEG",
+        "WEBP",
         100,
         0,
         (uri) => {
