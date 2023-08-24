@@ -5,9 +5,10 @@ import SingleProduct from "../../admin/cards/SingleProduct";
 import { LoadingOutlined } from "@ant-design/icons";
 import { fetchSearch } from "../../functions/product";
 import { Menu, Slider, Checkbox } from "antd";
-import { DollarOutlined } from "@ant-design/icons";
+
 import { searchQuery } from "../../Redux/reducers/searchreducers";
 import { getCategory } from "../../functions/category";
+import { getsubcategory } from "../../functions/subcategory";
 const { SubMenu, ItemGroup } = Menu; //destructure
 const Shop = () => {
   // getting the data from the redux
@@ -18,6 +19,8 @@ const Shop = () => {
   const [price, Setprice] = useState([0, 0]); // this is for the onchange on slider
   const [ok, Setok] = useState(false); // this is for change in state of slider
   const [category, Setcategory] = useState([]); // to add the category
+  const [subcategory, Setsubcategory] = useState([]);
+  const [sub, Setsub] = useState("");
   const [categoryIds, SetcategoryIds] = useState([]); // this is array of category id when user checked on checkbox
   // using useffect to show all the products based on the count
   // 1 load default products
@@ -61,6 +64,10 @@ const Shop = () => {
   // 3 search or filter the products based on price
   useEffect(() => {
     loadPrice({ price: price });
+    // this is for subcategory to get all subcateogry
+    getsubcategory().then((res) => {
+      Setsubcategory(res.data);
+    });
     // find all the category
     getCategory().then((res) => Setcategory(res.data));
   }, [ok]);
@@ -77,6 +84,7 @@ const Shop = () => {
     dispatch(searchQuery({ text: "" }));
     // clear the check box
     SetcategoryIds([]);
+
     Setprice(value);
     //delaying
     setTimeout(() => {
@@ -111,6 +119,7 @@ const Shop = () => {
     dispatch(searchQuery({ text: "" }));
     //clear the price also..
     Setprice([0, 0]);
+    Setsub("");
     const selectedId = e.target.value;
     // Check if the selectedId is already in categoryIds
     const isSelected = categoryIds.includes(selectedId);
@@ -125,6 +134,30 @@ const Shop = () => {
     }
   };
 
+  //  this is number 5 for subcategory
+  const ShowSubCategories = () =>
+    subcategory.map((item) => (
+      <div
+        key={item._id}
+        style={{ cursor: "pointer", fontSize: "12px" }}
+        onClick={() => handleSubmit(item)}
+        className="p-2 m-1 badge badge-secondary"
+      >
+        {item.name}
+      </div>
+    ));
+
+  // crreating the handlesubmit function
+  const handleSubmit = (el) => {
+    Setsub(el); // adding to this and send to backend sub
+    // need to clear all the thing like redux or price fileter checkbox
+    dispatch(searchQuery({ text: "" }));
+    SetcategoryIds([]);
+    Setprice([0, 0]);
+  };
+  useEffect(() => {
+    fetchSearch({ Subcatergory: sub }).then((res) => Setproduct(res.data));
+  }, [sub]);
   return (
     <>
       <div className="container-fluid">
@@ -132,7 +165,7 @@ const Shop = () => {
           <div className="col-md-3 pt-2">
             <h4>Search/filter</h4>
             <hr />
-            <Menu mode="inline" defaultOpenKeys={["1", "2"]}>
+            <Menu mode="inline" defaultOpenKeys={["1", "2", "3"]}>
               {/* for the slider of price */}
               <SubMenu key="1" title={<span className="h6">Price</span>}>
                 <div>
@@ -156,6 +189,22 @@ const Shop = () => {
                   }}
                 >
                   {ShowCategories()}
+                </div>
+              </SubMenu>
+              {/* this is for Subcategory */}
+              <SubMenu
+                key="3"
+                title={<span className="h6 mt-2">Subcategories</span>}
+              >
+                <div
+                  className="pl-4 pr-4"
+                  // style={{
+                  //   height: "250px",
+                  //   overflow: "scroll",
+                  //   overflowX: "hidden",
+                  // }}
+                >
+                  {ShowSubCategories()}
                 </div>
               </SubMenu>
             </Menu>
