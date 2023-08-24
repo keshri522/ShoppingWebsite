@@ -220,19 +220,18 @@ const Shop = () => {
                 Products
               </h4>
             )} */}
-
-            {product.length === 0 ? (
+            {/* {product.length === 0 ? (
               <>
                 <h4 className="text-center text-danger">No products found</h4>
               </>
-            ) : (
-              <div className="row pb-5">
-                {product.map((item) => (
-                  <div className="col-md-4 mt-3" key={item._id}>
-                    <SingleProduct product={item}></SingleProduct>
-                  </div>
-                ))}
-              </div>
+            ) : ( */}
+            <div className="row pb-5">
+              {product.map((item) => (
+                <div className="col-md-4 mt-3" key={item._id}>
+                  <SingleProduct product={item}></SingleProduct>
+                </div>
+              ))}
+            </div>
             )}
           </div>
         </div>
