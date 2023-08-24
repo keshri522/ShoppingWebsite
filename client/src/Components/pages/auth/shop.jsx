@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductList } from "../../functions/product";
 import SingleProduct from "../../admin/cards/SingleProduct";
-import { LoadingOutlined } from "@ant-design/icons";
+import { LoadingOutlined, ShoppingOutlined } from "@ant-design/icons";
 import { fetchSearch } from "../../functions/product";
-import { Menu, Slider, Checkbox } from "antd";
+import { Menu, Slider, Checkbox, Radio } from "antd";
 
 import { searchQuery } from "../../Redux/reducers/searchreducers";
 import { getCategory } from "../../functions/category";
@@ -21,6 +21,22 @@ const Shop = () => {
   const [category, Setcategory] = useState([]); // to add the category
   const [subcategory, Setsubcategory] = useState([]);
   const [sub, Setsub] = useState("");
+  const [brand, Setbrand] = useState(""); // this is when onchange will happen on radio button we push and matched with the current brand
+  const [brands, Setbrands] = useState([
+    "Apple",
+    "Samsung",
+    "Microsoft",
+    "Lenovo",
+    "ASUS",
+  ]); // this is the default value
+  const [colors, Setcolors] = useState([
+    "Black",
+    "Brown",
+    "Silver",
+    "White",
+    "Blue",
+  ]); // this is default colors
+  const [color, Setcolor] = useState(); // this is for when i chang the radio button
   const [categoryIds, SetcategoryIds] = useState([]); // this is array of category id when user checked on checkbox
   // using useffect to show all the products based on the count
   // 1 load default products
@@ -120,6 +136,7 @@ const Shop = () => {
     //clear the price also..
     Setprice([0, 0]);
     Setsub("");
+    Setbrand("");
     const selectedId = e.target.value;
     // Check if the selectedId is already in categoryIds
     const isSelected = categoryIds.includes(selectedId);
@@ -154,18 +171,83 @@ const Shop = () => {
     dispatch(searchQuery({ text: "" }));
     SetcategoryIds([]);
     Setprice([0, 0]);
+    Setbrand("");
   };
   useEffect(() => {
     fetchSearch({ Subcatergory: sub }).then((res) => Setproduct(res.data));
   }, [sub]);
+
+  // this is for the colors
+  const Showbrands = () =>
+    brands.map((item) => (
+      <div>
+        <Radio
+          value={item}
+          name={item}
+          checked={item === brand}
+          onChange={handleRadiochange}
+          className="p-1 font-weight-bold"
+        >
+          {item}
+        </Radio>
+      </div>
+    ));
+  // this function will work on onchange when we click on radio button or changed
+  const handleRadiochange = (e) => {
+    //we need to clear all therdeux store or state
+    dispatch(searchQuery({ text: "" }));
+    SetcategoryIds([]);
+    Setprice([0, 0]);
+    Setsub("");
+    Setbrand(e.target.value);
+  };
+  // using useffect to make the requrest to backend whenever our brand changes
+  useEffect(() => {
+    fetchSearch({ brand: brand }).then((res) => {
+      Setproduct(res.data);
+    });
+  }, [brand]);
+  // this is for the colors
+  const ShowColros = () =>
+    colors.map((item) => (
+      <div>
+        <Radio
+          value={item}
+          name={item}
+          checked={item === color}
+          onChange={handleColors}
+          className="font-weight-bold"
+        >
+          {item}
+        </Radio>
+      </div>
+    ));
+  // this function will add the current item to color and mathed with item if mathced then check this
+  const handleColors = (e) => {
+    console.log(e.target.value);
+    // i need to clear all the search item before this
+    dispatch(searchQuery({ text: "" })); // clear the redux store
+    Setprice([0, 0]);
+    Setsub("");
+    Setbrand([]);
+    SetcategoryIds([]); // make it null
+    Setcolor(e.target.value);
+  };
+  // make a request to the color value
+  useEffect(() => {
+    fetchSearch({ color: color }).then((res) => Setproduct(res.data));
+  }, [color]); // when ever the color change useeffect run
   return (
     <>
       <div className="container-fluid">
         <div className="row">
-          <div className="col-md-3 pt-2">
+          <div className="col-md-3 pt-2 ">
             <h4>Search/filter</h4>
             <hr />
-            <Menu mode="inline" defaultOpenKeys={["1", "2", "3"]}>
+            <Menu
+              mode="inline"
+              defaultOpenKeys={["1", "2", "3", "4", "5", "6"]}
+            >
               {/* for the slider of price */}
               <SubMenu key="1" title={<span className="h6">Price</span>}>
                 <div>
@@ -180,7 +262,10 @@ const Shop = () => {
                 </div>
               </SubMenu>
               {/* for the categorires */}
-              <SubMenu key="2" title={<span className="h6">Categories</span>}>
+              <SubMenu
+                key="2"
+                title={<span className="h6 text-primary">Categories</span>}
+              >
                 <div
                   style={{
                     height: "250px",
@@ -194,18 +279,25 @@ const Shop = () => {
               {/* this is for Subcategory */}
               <SubMenu
                 key="3"
-                title={<span className="h6 mt-2">Subcategories</span>}
+                title={
+                  <span className="h6 mt-2 text-primary">Subcategories</span>
+                }
               >
-                <div
-                  className="pl-4 pr-4"
-                  // style={{
-                  //   height: "250px",
-                  //   overflow: "scroll",
-                  //   overflowX: "hidden",
-                  // }}
-                >
-                  {ShowSubCategories()}
-                </div>
+                <div className="pl-4 pr-4">{ShowSubCategories()}</div>
+              </SubMenu>
+              {/* this is for the colors */}
+              <SubMenu
+                key="4"
+                title={<span className="h6 mt-2 text-primary">Brands</span>}
+              >
+                <div>{Showbrands()}</div>
+              </SubMenu>
+              {/* this is for the colors */}
+              <SubMenu
+                key="4"
+                title={<span className="h6 mt-2 text-primary">Colors</span>}
+              >
+                <div>{ShowColros()}</div>
               </SubMenu>
             </Menu>
           </div>
@@ -232,7 +324,6 @@ const Shop = () => {
                 </div>
               ))}
             </div>
-            )}
           </div>
         </div>
       </div>

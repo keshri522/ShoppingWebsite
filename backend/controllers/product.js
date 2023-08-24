@@ -225,9 +225,42 @@ const handleSubcatergory = async (req, res, Subcatergory) => {
     res.status(400).json(error);
   }
 };
+// this function will return all the brand based on the brand
+const handlebrand = async (req, res, brand) => {
+  try {
+    let brands = await Product.find({ brand: brand })
+      .populate("category")
+      .populate("Subcatergory");
+    if (brands) {
+      res.status(200).send(brands);
+    } else {
+      res.status(404).send("No products found for this brand");
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(error);
+  }
+};
+// this will give the product based on the color coming in the body
+const handleColor = async (req, res, color) => {
+  try {
+    let colors = await Product.find({ color: color })
+      .populate("category")
+      .populate("Subcatergory");
+    if (colors) {
+      res.status(200).send(colors);
+      // console.log(colors);
+    } else {
+      res.status(404).send("No products found for this colors");
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(error);
+  }
+};
 // FILTERING AND SEARCHING OF PRODUCTS
 const searchProducts = async (req, res) => {
-  const { query, price, category, Subcatergory } = req.body; // based on the data user send from fronted it may color ,category ,brand
+  const { query, price, category, Subcatergory, brand, color } = req.body; // based on the data user send from fronted it may color ,category ,brand
   // i need to create helper funtin based on th req.body..
 
   if (query) {
@@ -244,6 +277,13 @@ const searchProducts = async (req, res) => {
   // this is for the subcategory
   if (Subcatergory) {
     await handleSubcatergory(req, res, Subcatergory);
+  }
+  // this is for the brand filtering
+  if (brand) {
+    await handlebrand(req, res, brand);
+  }
+  if (color) {
+    await handleColor(req, res, color);
   }
 };
 
