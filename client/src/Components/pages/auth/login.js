@@ -7,7 +7,7 @@ import {
 } from "firebase/auth";
 import { toast } from "react-toastify";
 import "../../../style.css";
-
+import { useLocation } from "react-router";
 import { loggedInUser } from "../../Redux/reducers/userReducers";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
@@ -24,9 +24,16 @@ const Login = () => {
   // get the user or token of current user check if user and token are there we need to navigate the user to homepage.
   // this will prevent user to go to manually forgot/password page if he is already loggin..
   let user = useSelector((state) => state.rootreducer.user); // this will give current user toekn
+  const location = useLocation();
+
   // role based login
+
   const roleBasedRedirect = (data) => {
-    if (data.data.role === "admin") {
+    // if user add the product to cart and proceed to login then we also send the from route with the navigate then capture here using uselocation
+    // here location.state.from ="cart" route
+    if (location.state) {
+      navigate(`/${location.state.from}`);
+    } else if (data.data.role === "admin") {
       navigate("/admin/dashboard");
     } else {
       navigate("/user/dashboard");
