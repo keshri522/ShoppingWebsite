@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import Checkoutdetails from "../../admin/cards/checkoutdetails";
 const CartPage = () => {
   const navigate = useNavigate();
   // get the data from redux
   const Cart = useSelector((state) => state.rootreducer.cart);
+
   const User = useSelector((state) => state.rootreducer.user);
   const disptach = useDispatch();
   // this function will return the total ammout
@@ -17,13 +19,34 @@ const CartPage = () => {
     });
     return add;
   };
+  // this function will create the details of the product in the table form
+  const ShowprodcutCartdetails = () => (
+    <table className="table table-bordered">
+      <thead className="table-light">
+        <tr>
+          <th scope="col">Image</th>
+          <th scope="col">Title</th>
+          <th scope="col">Brand</th>
+          <th scope="col">Price</th>
+          <th scope="col">Color</th>
+          <th scope="col">Count</th>
+          <th scope="col">Shipping</th>
+          <th scope="col">Remove</th>
+        </tr>
+      </thead>
+
+      {Cart.map((item) => (
+        <Checkoutdetails key={item._id} cart={item}></Checkoutdetails>
+      ))}
+    </table>
+  );
   // this function will send all the cart details to databse if user manually try to CHANGE THE LOCAL stroage price then its not good we send it to db then once user come as login then we will get it from db
   const SavecarttoDb = () => {};
   return (
     <>
       <div className="container-fluid pt-3">
         <div className="row">
-          <div className="col-md-8">
+          <div className="col-md-8 ">
             <h4 className="text-primary">cart {Cart.length}</h4>
             {!Cart.length ? (
               <h4 className="text-danger">
@@ -33,11 +56,11 @@ const CartPage = () => {
                 </Link>
               </h4>
             ) : (
-              "show cards"
+              ShowprodcutCartdetails()
             )}
           </div>
 
-          <div className="col-md-3">
+          <div className="col-lg-3">
             <h4 className="text-primary">Order Summary</h4>
             <hr />
             <p>Products</p>
@@ -71,6 +94,7 @@ const CartPage = () => {
                   navigate("/login", { state: { from: "cart" } });
                 }}
                 className="btn btn-sm btn-secondary mt-2"
+                disabled={!Cart.length}
               >
                 login to checkout
               </button>
