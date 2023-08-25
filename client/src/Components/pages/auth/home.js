@@ -61,9 +61,6 @@ const Home = () => {
       {/* showing all the product based on the api  */}
       <div className="container-fluid">
         <div className="row p-5">
-          <div className="col-md-1">
-            <h1>Hello</h1>
-          </div>
           <div className="col">
             <div className="row">
               {allproducts &&

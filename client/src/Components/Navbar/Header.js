@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Menu } from "antd";
+import { Menu, Badge } from "antd";
 import {
   AppstoreOutlined,
   SettingOutlined,
@@ -9,6 +9,7 @@ import {
   GithubOutlined,
   LinkedinOutlined,
   ShoppingOutlined,
+  ShoppingCartOutlined,
 } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -19,6 +20,9 @@ import Searchform from "../forms/Searchform";
 import { searchQuery } from "../Redux/reducers/searchreducers";
 const { SubMenu, Item } = Menu;
 const Header = () => {
+  // this will give the card from the redux
+  const cart = useSelector((state) => state.rootreducer.cart);
+
   // taking data from loggedInuser redux store..
   let userData = useSelector((state) => state.rootreducer.user);
   let userName;
@@ -73,42 +77,6 @@ const Header = () => {
           </Item>
         )}
 
-        {/* conditionally rendering the button based on the user present or not */}
-        {userData && (
-          <SubMenu
-            icon={<SettingOutlined />}
-            title={userName}
-            className="ml-auto"
-            style={linkStyle}
-          >
-            {/* conditonlally rendering the submenu based on user role */}
-            {userData && userData.role === "subscriber" && (
-              <Item className="text-primary">
-                <Link to="/user/dashboard" style={linkStyle}>
-                  {" "}
-                  Dashboard
-                </Link>
-              </Item>
-            )}
-
-            {userData && userData.role === "admin" && (
-              <Item className="text-primary">
-                <Link to="/admin/dashboard" style={linkStyle}>
-                  {" "}
-                  Dashboard
-                </Link>
-              </Item>
-            )}
-            <Item
-              className="text-primary"
-              icon={<LogoutOutlined />}
-              onClick={Logout}
-              style={linkStyle}
-            >
-              Logout
-            </Item>
-          </SubMenu>
-        )}
         {!userData && (
           <Item key="login" icon={<UserOutlined />}>
             <Link to="/login" style={linkStyle}>
@@ -141,10 +109,57 @@ const Header = () => {
             ></GithubOutlined>
           </Link>
         </div>
+
+        {/* this is for the cart option showing */}
+        {(!userData || userData.role === "subscriber") && (
+          <Item key="cart" icon={<ShoppingCartOutlined />} className="ml-1">
+            <Link to="/cart" style={linkStyle}>
+              <Badge color="volcano" count={cart.length} offset={[9, 0]}>
+                Cart
+              </Badge>
+            </Link>
+          </Item>
+        )}
         {(!userData || userData.role === "subscriber") && (
           <Item style={linkStyle}>
             <Searchform className="p-2"></Searchform>
           </Item>
+        )}
+
+        {/* conditionally rendering the button based on the user present or not */}
+        {userData && (
+          <SubMenu
+            icon={<SettingOutlined />}
+            title={userName}
+            style={linkStyle}
+          >
+            {/* conditonlally rendering the submenu based on user role */}
+            {userData && userData.role === "subscriber" && (
+              <Item className="text-primary">
+                <Link to="/user/dashboard" style={linkStyle}>
+                  {" "}
+                  Dashboard
+                </Link>
+              </Item>
+            )}
+
+            {userData && userData.role === "admin" && (
+              <Item className="text-primary">
+                <Link to="/admin/dashboard" style={linkStyle}>
+                  {" "}
+                  Dashboard
+                </Link>
+              </Item>
+            )}
+            <Item
+              className="text-primary"
+              icon={<LogoutOutlined />}
+              onClick={Logout}
+              style={linkStyle}
+            >
+              Logout
+            </Item>
+          </SubMenu>
         )}
       </Menu>
     </>

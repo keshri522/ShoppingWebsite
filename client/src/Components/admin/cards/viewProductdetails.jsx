@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Card, Tabs } from "antd";
+import { Card, Tabs, Tooltip } from "antd";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import _ from "lodash";
+import { addtocart } from "../../Redux/reducers/addtocartreducers";
 import { HeartOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 // this is the carousel from npm pakage and this is the css for the carousal pakage for showing multiple images
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from "react-responsive-carousel";
 import Productdetails from "./productdetails";
 const ViewProductdetails = ({ product }) => {
+  const dispatch = useDispatch();
+  const [tooltip, Settooltip] = useState("Click to add ");
   const { Tabpane } = Tabs;
   // destructing the itesm from product props.
   const {
@@ -20,6 +25,41 @@ const ViewProductdetails = ({ product }) => {
     Subcatergory,
     sold,
   } = product;
+  // this function will add item to add to cart
+  // 1. we need to create empty array. once user click to add to we add the product into localstroge as well as in database
+  // 2. If localstroage is already present then we get the value and assign to cart array
+  // 3. if localstroage is not presnet then we need to push the product in the cart arry
+  // 4. check if user click on the same product we need avoid adding dubplicate products in the cart so we can use mpap function or simpe use loadash library
+  // 5. then add the unique item to the localstorage..
+
+  const handleAddtoCart = (product) => {
+    // check if window object is presnet or not
+    let cart = [];
+    if (typeof window !== undefined) {
+      // check if local storage have some item
+      if (localStorage.getItem("Cart")) {
+        // then need to add this products in the cart
+        cart = JSON.parse(localStorage.getItem("Cart"));
+      }
+
+      // if there is no product present in the local storage then we push the product in the cart array
+
+      cart.push({
+        ...product,
+        count: 1,
+      });
+
+      // need ot check before adding the
+      let unique = _.uniqWith(cart, _.isEqual); // remove the dublicates
+      // save in the localstorge.
+      localStorage.setItem("Cart", JSON.stringify(unique));
+      // need to push to redux store
+      dispatch(addtocart(unique));
+
+      Settooltip("Added to cart");
+    }
+  };
+
   return (
     <>
       <div className="col-md-7">
@@ -55,9 +95,14 @@ const ViewProductdetails = ({ product }) => {
         <Card
           actions={[
             <>
-              <ShoppingCartOutlined className="text-success"></ShoppingCartOutlined>
-              <br />
-              <h6> Add to Cart</h6>
+              <Tooltip title={tooltip}>
+                <a onClick={() => handleAddtoCart(product)}>
+                  <ShoppingCartOutlined className="text-danger "></ShoppingCartOutlined>
+                  <br />
+                  Add to Cart
+                </a>
+              </Tooltip>
+              ,
             </>,
             <Link to="/" style={{ textDecoration: "none" }}>
               <HeartOutlined className="text-primary"></HeartOutlined>

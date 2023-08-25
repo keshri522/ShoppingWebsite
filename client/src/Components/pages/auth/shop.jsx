@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductList } from "../../functions/product";
 import SingleProduct from "../../admin/cards/SingleProduct";
-import { LoadingOutlined, ShoppingOutlined } from "@ant-design/icons";
+
 import { fetchSearch } from "../../functions/product";
 import { Menu, Slider, Checkbox, Radio } from "antd";
 
