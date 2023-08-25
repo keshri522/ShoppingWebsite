@@ -3,6 +3,7 @@ import { Card, Tabs, Tooltip } from "antd";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import _ from "lodash";
+import { changeState } from "../../Redux/reducers/drawerreducers";
 import { addtocart } from "../../Redux/reducers/addtocartreducers";
 import { HeartOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 // this is the carousel from npm pakage and this is the css for the carousal pakage for showing multiple images
@@ -55,7 +56,8 @@ const ViewProductdetails = ({ product }) => {
       localStorage.setItem("Cart", JSON.stringify(unique));
       // need to push to redux store
       dispatch(addtocart(unique));
-
+      // also disptach the action which is true to setstatechange reducers to show the sidedrawer
+      dispatch(changeState(true));
       Settooltip("Added to cart");
     }
   };

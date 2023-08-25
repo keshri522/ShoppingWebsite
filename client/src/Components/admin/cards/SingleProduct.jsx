@@ -5,6 +5,7 @@ import { EyeOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import _ from "lodash";
 import { useDispatch } from "react-redux";
+import { changeState } from "../../Redux/reducers/drawerreducers";
 import { addtocart } from "../../Redux/reducers/addtocartreducers";
 const { Meta } = Card; // destructing the Meta object from the Card compoentest
 const SingleProduct = ({ product, Setallproducts }) => {
@@ -41,7 +42,8 @@ const SingleProduct = ({ product, Setallproducts }) => {
       localStorage.setItem("Cart", JSON.stringify(unique));
       // need to push to redux store
       dispatch(addtocart(unique));
-
+      // dispatch to true to the changestate reducers to show the drawe
+      dispatch(changeState(true));
       Settooltip("Added to cart");
     }
   };

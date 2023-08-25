@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import { getIdTokenResult } from "firebase/auth";
 import { loggedInUser } from "./Components/Redux/reducers/userReducers";
 import axios from "axios";
+import SideDrawer from "./Components/drawer/sidedrawer";
 function App() {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -53,7 +54,9 @@ function App() {
   return (
     <div>
       <Header></Header>
+
       <ToastContainer></ToastContainer>
+      <SideDrawer></SideDrawer>
       <Router></Router>
     </div>
   );
