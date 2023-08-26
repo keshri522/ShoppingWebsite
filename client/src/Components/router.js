@@ -20,6 +20,7 @@ import Categoryhome from "./pages/category/categoryhome";
 import Subcategoryhome from "./pages/subcategory/subcategoryhome";
 import Shop from "./pages/auth/shop";
 import CartPage from "./pages/auth/cart";
+import Checkout from "./admin/checkout/checkout";
 const Router = () => {
   return (
     <div>
@@ -87,6 +88,7 @@ const Router = () => {
         ></Route>
         <Route path="/shop" element={<Shop></Shop>}></Route>
         <Route path="/cart" element={<CartPage></CartPage>}></Route>
+        <Route path="/checkout" element={<Checkout></Checkout>}></Route>
       </Routes>
     </div>
   );

@@ -286,6 +286,7 @@ const searchProducts = async (req, res) => {
     await handleColor(req, res, color);
   }
 };
+// this is for the user controllers
 
 // Export the function if needed
 module.exports = {

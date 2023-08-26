@@ -3,12 +3,15 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Checkoutdetails from "../../admin/cards/checkoutdetails";
+import { toast } from "react-toastify";
+import { UserCartData } from "../../functions/User";
 const CartPage = () => {
   const navigate = useNavigate();
   // get the data from redux
   const Cart = useSelector((state) => state.rootreducer.cart);
 
   const User = useSelector((state) => state.rootreducer.user);
+
   const disptach = useDispatch();
   // this function will return the total ammout
   const gettotalPrice = () => {
@@ -41,7 +44,22 @@ const CartPage = () => {
     </table>
   );
   // this function will send all the cart details to databse if user manually try to CHANGE THE LOCAL stroage price then its not good we send it to db then once user come as login then we will get it from db
-  const SavecarttoDb = () => {};
+  const SavecarttoDb = () => {
+    // saving the cart into data base for security reason
+    if (User && User.token) {
+      UserCartData(Cart, User.token)
+        .then((res) => {
+          // if response is coming then only redirect the use to check out we have to for that
+          if (res.data.ok) {
+            navigate("/checkout");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          toast.error(error.message);
+        });
+    }
+  };
   return (
     <>
       <div className="container-fluid pt-3">

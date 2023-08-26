@@ -34,7 +34,7 @@ const SideDrawer = () => {
       }}
       visible={bolleanState}
     >
-      {Cart.map((item) => (
+      {/* {Cart?.map((item) => (
         <div className="row">
           <div className="col ">
             {item.images.length ? (
@@ -60,7 +60,38 @@ const SideDrawer = () => {
             )}
           </div>
         </div>
-      ))}
+      ))} */}
+      {Cart?.length ? (
+        Cart.map((item) => (
+          <div className="row" key={item._id}>
+            <div className="col">
+              {item.images.length ? (
+                <>
+                  <img
+                    className="mt-3"
+                    src={item.images[0].url}
+                    style={imagestyle}
+                    alt={item.title}
+                  />
+                  <p className="text-center text-light bg-secondary mb-4 font-weight-bold">
+                    {item.title} x {item.count}=${item.count * item.price}
+                  </p>
+                </>
+              ) : (
+                <>
+                  <img src={laptop} style={imagestyle} alt={item.title} />
+                  <p className="text-center text-light bg-secondary font-weight-bold">
+                    {item.title} x {item.count}=${item.count * item.price}
+                  </p>
+                </>
+              )}
+            </div>
+          </div>
+        ))
+      ) : (
+        <p>Your cart is empty.</p>
+      )}
+
       <Link to="/cart">
         <button
           style={{ width: "50%" }}
