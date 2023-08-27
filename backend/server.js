@@ -20,12 +20,35 @@ const GetCart = require("./routes/user");
 // import the Database connection function and run;
 DatabaseConnection();
 // middlewares
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true })); // enabling the bodyparser to access as middle warre
 app.use(bodyParser.json({ limit: "5mb" })); // increase the size if data is bigger.
 app.use(morgan("tiny")); // printing the url or in the console or request.
-app.use(cors());
+
 // using Routes with middleware..
-app.use("/api", AuthRoute, Category, Product, UserRoute, GetCart); // means AuthRoute will access only if we go to by /api first.this middleware does
+// ...
+
+// using Routes with middleware..
+app.use(
+  "/api",
+  (req, res, next) => {
+    // Set the COOP header for the routes that need it
+    res.setHeader(
+      "Cross-Origin-Opener-Policy",
+      "same-origin, same-origin-allow-popups"
+    );
+    next(); // Proceed to the next middleware
+  },
+  AuthRoute,
+  Category,
+  Product,
+  UserRoute,
+  GetCart
+);
+
+// ...
+
+// app.use("/api", AuthRoute, Category, Product, UserRoute, GetCart); // means AuthRoute will access only if we go to by /api first.this middleware does
 app.use("/user", user); //access only first you got user/then .
 app.use("/api", subscategory, uploadImage);
 // app.use("/route", Category); // access by Category routes

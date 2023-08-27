@@ -106,7 +106,7 @@ const ViewProductdetails = ({ product }) => {
               </Tooltip>
               ,
             </>,
-            <Link to="/" style={{ textDecoration: "none" }}>
+            <Link style={{ textDecoration: "none" }}>
               <HeartOutlined className="text-primary"></HeartOutlined>
               <br />
               <h6> Add to Wishlist</h6>

@@ -32,7 +32,7 @@ const SideDrawer = () => {
       onClose={() => {
         dispatch(changeState(false));
       }}
-      visible={bolleanState}
+      open={bolleanState}
     >
       {/* {Cart?.map((item) => (
         <div className="row">

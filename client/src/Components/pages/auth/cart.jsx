@@ -53,7 +53,6 @@ const CartPage = () => {
 
   // this function will send all the cart details to databse if user manually try to CHANGE THE LOCAL stroage price then its not good we send it to db then once user come as login then we will get it from db
   const SavecarttoDb = () => {
-    console.log("hello");
     // saving the cart into data base for security reason
     if (User && User.token) {
       console.log(User && User.token);

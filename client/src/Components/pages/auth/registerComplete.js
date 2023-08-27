@@ -25,11 +25,11 @@ const RegisterComplete = () => {
   const navigate = useNavigate();
   // role based login based on the role if user then other route if admin then other routes
   const roleBasedRedirect = (data) => {
-    console.log(data.data.role);
+    // console.log(data.data.role);
     if (data.data.role === "admin") {
       navigate("/admin/dashboard");
     } else {
-      navigate("/user/dashboard");
+      navigate("/");
     }
   };
   const handleSubmit = async (e) => {
