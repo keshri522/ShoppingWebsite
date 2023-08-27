@@ -96,5 +96,25 @@ const removeusercart = async (req, res) => {
     res.status(500).send("Server error");
   }
 };
+// this will save the address on the database
+const addressSave = async (req, res) => {
+  try {
+    const updatedUser = await User.findOneAndUpdate(
+      { email: req.user.email },
+      { address: req.body.address },
+      { new: true } // This option returns the updated user document
+    );
 
-module.exports = { getuserCart, userCart, removeusercart };
+    if (updatedUser) {
+      // User found and updated
+      res.status(200).json("Ok");
+    } else {
+      res.status(404).send("User not found");
+    }
+  } catch (error) {
+    res.status(500).send("Internal Server Error");
+    console.log(error);
+  }
+};
+
+module.exports = { getuserCart, userCart, removeusercart, addressSave };

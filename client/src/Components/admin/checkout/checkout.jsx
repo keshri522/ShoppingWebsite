@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Getusercart, EmptyCart } from "../../functions/User";
+import { Getusercart, EmptyCart, UserAddress } from "../../functions/User";
 import { toast } from "react-toastify";
 import { addtocart } from "../../Redux/reducers/addtocartreducers";
+// to createaddress bar we use React quill library
+import ReactQuill from "react-quill";
+// this is the css of Reactquill
+import "react-quill/dist/quill.snow.css";
 const Checkout = () => {
   const disptach = useDispatch();
   const User = useSelector((state) => state.rootreducer.user);
 
-  /// this function will save all the cart into the databse so if user manipulates from local storgage then no worries
-  const savecarttoDb = () => {};
   const [products, Setproducts] = useState([]);
   const [total, Settotal] = useState(0);
+  const [address, Setaddress] = useState(""); // fro the text area taking addres from user
+  const [savedaddress, Setsavedaddress] = useState(false); // to keep the button disable based on state
   // using useeffect to run the function
   useEffect(() => {
     if (User && User.token) {
@@ -25,6 +29,19 @@ const Checkout = () => {
         });
     }
   }, []);
+  /// this function will save all the cart into the databse so if user manipulates from local storgage then no worries
+  const savecarttoDb = () => {
+    // need to send the address to database
+    if (User && User.token) {
+      UserAddress(address, User.token).then((res) => {
+        // this will work only if in the response data===ok
+        Setsavedaddress(true);
+
+        toast.success("Address Saved");
+      });
+    }
+  };
+
   // this will delete the cart to empty
   const DeleteCart = () => {
     // need to remove from localstroage
@@ -54,10 +71,14 @@ const Checkout = () => {
           <div className="col-md-6 ">
             <h1>Delivery address</h1>
             <br />
-            textarea
+            <ReactQuill
+              theme="snow"
+              value={address}
+              onChange={Setaddress}
+            ></ReactQuill>
             <br />
             <button
-              className="btn btn-sm btn-warning mt-2"
+              className="btn btn-sm btn-warning mt-2 mr-3"
               onClick={savecarttoDb}
             >
               Save
@@ -85,7 +106,12 @@ const Checkout = () => {
             </p>
             <div className="row">
               <div className="col-md-5 mt-2">
-                <button className="btn btn-primary">Place Order</button>
+                <button
+                  className="btn btn-primary"
+                  disabled={!savedaddress || !products.length}
+                >
+                  Place Order
+                </button>
               </div>
               <div className="col-md-5 mt-2">
                 <button

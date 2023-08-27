@@ -57,6 +57,7 @@ const Shop = () => {
     const delayed = setTimeout(() => {
       fetchProducts({ query: SearchQuery.text });
     }, 400);
+
     // clearing the time interval once it is completed
     return () => clearInterval(delayed);
   }, [SearchQuery.text]);
