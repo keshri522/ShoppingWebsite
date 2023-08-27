@@ -14,7 +14,7 @@ const ShowProductDetails = () => {
   const loadProduct = () => {
     Setloading(true);
     getSingleProduct(slug).then((res) => {
-      console.log(res.data);
+      // console.log(res.data);
       Setsingleproduct(res.data[0]);
       Setloading(false);
     });

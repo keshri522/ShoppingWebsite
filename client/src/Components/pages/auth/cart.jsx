@@ -55,10 +55,10 @@ const CartPage = () => {
   const SavecarttoDb = () => {
     // saving the cart into data base for security reason
     if (User && User.token) {
-      console.log(User && User.token);
+      // console.log(User && User.token);
       UserCartData(Cart, User.token)
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           // if response is coming then only redirect the use to check out we have to for that
           if (res.data.ok) {
             navigate("/checkout");
