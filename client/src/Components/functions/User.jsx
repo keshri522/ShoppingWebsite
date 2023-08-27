@@ -1,7 +1,7 @@
 // in this folder i create all the curd operation of the category route lie delete,update,read,and create, that have added in backedn..
 import axios from "axios";
 // this is for creating category api..  this is protected routes so we need to send the toekn also
-console.log(process.env.REACT_APP_ROUTE_API);
+
 const UserCartData = async (cart, token) => {
   try {
     const response = await axios.post(

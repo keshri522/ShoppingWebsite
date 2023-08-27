@@ -23,6 +23,7 @@ const Checkout = () => {
     if (User && User.token) {
       Getusercart(User.token)
         .then((res) => {
+          // console.log(res.data.products);
           //   console.log(res.data);
           Setproducts(res.data.products);
           Settotal(res.data.cartTotal);
@@ -139,7 +140,7 @@ const Checkout = () => {
 
             <hr />
             <p className="text-secondary  font-weight-bold">
-              Cart Total:{total}
+              Cart Total:${total}
             </p>
             <div className="row">
               <div className="col-md-5 mt-2">

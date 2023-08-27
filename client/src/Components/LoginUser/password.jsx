@@ -4,7 +4,7 @@ import { auth } from "../firbase";
 import { updatePassword } from "firebase/auth";
 import { useNavigate } from "react-router";
 import { useSelector } from "react-redux";
-
+import UserSidebar from "../Navbar/UserSidebar";
 const Password = () => {
   // getting the data or user from redux store..
   const LoginUser = useSelector((state) => state.rootreducer.user);
@@ -75,9 +75,12 @@ const Password = () => {
     </form>
   );
   return (
-    <div className="container p-5">
-      <div className="row">
-        <div className="col-md-6 offset-md-3">
+    <div className="container-fluid p-5">
+      <div className="row mt-3">
+        <div className="col-md-2">
+          <UserSidebar></UserSidebar>
+        </div>
+        <div className="col-md-6 offset-md-1 ">
           {/* show based on loading.. */}
           {loading ? (
             <h2 className="text-danger">Loading...</h2>

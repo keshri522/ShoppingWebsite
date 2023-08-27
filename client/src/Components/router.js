@@ -21,6 +21,7 @@ import Subcategoryhome from "./pages/subcategory/subcategoryhome";
 import Shop from "./pages/auth/shop";
 import CartPage from "./pages/auth/cart";
 import Checkout from "./admin/checkout/checkout";
+import Userhistory from "./pages/auth/history";
 const Router = () => {
   return (
     <div>
@@ -89,6 +90,10 @@ const Router = () => {
         <Route path="/shop" element={<Shop></Shop>}></Route>
         <Route path="/cart" element={<CartPage></CartPage>}></Route>
         <Route path="/checkout" element={<Checkout></Checkout>}></Route>
+        <Route
+          path="/user/history"
+          element={<Userhistory></Userhistory>}
+        ></Route>
       </Routes>
     </div>
   );

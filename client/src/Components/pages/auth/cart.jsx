@@ -15,8 +15,11 @@ const CartPage = () => {
   const disptach = useDispatch();
   // this function will return the total ammout
   const gettotalPrice = () => {
+    if (!Cart && !Cart.length) {
+      return 0;
+    }
     let add = 0;
-    let price = Cart.map((item) => {
+    let price = Cart?.map((item) => {
       let c = item.price * item.count;
       add += c;
     });
@@ -38,18 +41,23 @@ const CartPage = () => {
         </tr>
       </thead>
 
-      {Cart.map((item) => (
-        <Checkoutdetails key={item._id} cart={item}></Checkoutdetails>
-      ))}
+      {Cart && Cart.length ? (
+        Cart.map((item) => (
+          <Checkoutdetails key={item._id} cart={item}></Checkoutdetails>
+        ))
+      ) : (
+        <h4>No item in the Cart</h4>
+      )}
     </table>
   );
+
   // this function will send all the cart details to databse if user manually try to CHANGE THE LOCAL stroage price then its not good we send it to db then once user come as login then we will get it from db
   const SavecarttoDb = () => {
     // saving the cart into data base for security reason
     if (User && User.token) {
       UserCartData(Cart, User.token)
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           // if response is coming then only redirect the use to check out we have to for that
           if (res.data.ok) {
             navigate("/checkout");
@@ -66,9 +74,9 @@ const CartPage = () => {
       <div className="container-fluid pt-3">
         <div className="row">
           <div className="col-md-8 ">
-            <h4 className="text-primary">cart {Cart.length}</h4>
+            <h4 className="text-primary ml-3">Cart {Cart.length}</h4>
             {!Cart.length ? (
-              <h4 className="text-danger">
+              <h4 className="text-danger ml-3">
                 No porducts in the Cart{" "}
                 <Link style={{ textDecoration: "none" }} to="/">
                   Continue Shopping
@@ -83,13 +91,19 @@ const CartPage = () => {
             <h4 className="text-primary">Order Summary</h4>
             <hr />
             <p>Products</p>
-            {Cart.map((item) => (
-              <div key={item._id}>
-                <p className="font-weight-bold text-secondary">
-                  {item.title}x{item.count}=${item.count * item.price}
-                </p>
-              </div>
-            ))}
+            <div>
+              {Cart.length === 0 ? (
+                <p>Your cart is empty.</p>
+              ) : (
+                Cart.map((item) => (
+                  <div key={item._id}>
+                    <p className="font-weight-bold text-secondary">
+                      {item.title} x {item.count} = ${item.count * item.price}
+                    </p>
+                  </div>
+                ))
+              )}
+            </div>
             <hr />
             Total:
             {

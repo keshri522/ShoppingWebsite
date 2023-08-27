@@ -7,7 +7,7 @@ import { searchQuery } from "../Redux/reducers/searchreducers";
 const Searchform = () => {
   const dispatch = useDispatch(); // for dispatching the action into store..
   const SearchQuery = useSelector((state) => state.rootreducer.text); // this will give the text from redux..
-  console.log(SearchQuery.text);
+  // console.log(SearchQuery.text);
   const navigate = useNavigate();
   //   console.log(SearchQuery);
   // some function onchange and handlesubmit
