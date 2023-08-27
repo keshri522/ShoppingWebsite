@@ -7,10 +7,13 @@ import { addtocart } from "../../Redux/reducers/addtocartreducers";
 import ReactQuill from "react-quill";
 // this is the css of Reactquill
 import "react-quill/dist/quill.snow.css";
+import { useNavigate } from "react-router-dom";
 const Checkout = () => {
+  const navigate = useNavigate();
   const disptach = useDispatch();
   const User = useSelector((state) => state.rootreducer.user);
-
+  const [count, Setcount] = useState(5);
+  const [loading, Setloading] = useState(false);
   const [products, Setproducts] = useState([]);
   const [total, Settotal] = useState(0);
   const [address, Setaddress] = useState(""); // fro the text area taking addres from user
@@ -64,6 +67,40 @@ const Checkout = () => {
         });
     }
   };
+  // this function will redirect user to its history when user placed the order
+  // const OrderPlaced = () => {
+  //   // remove from the local storage as well as from redux
+
+  //   Setloading(true);
+  //   if (typeof window !== "undefined") {
+  //     localStorage.removeItem("Cart");
+  //   }
+  //   disptach(addtocart("")); // making reddux empty
+  //   // make some delay
+  //   Setcount(5);
+  //   const Interval = setInterval(() => {
+  //     Setcount((count) => count - 1);
+  //   }, 1000);
+  //   // if it count become =0 then navigate
+  //   // navigate to the user/history
+
+  //   if (count === 0) {
+  //     clearInterval(Interval);
+  //     navigate("/user/history");
+  //     Setloading(false);
+  //   }
+  // };
+  const handleOrderPlaced = () => {
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("Cart");
+    }
+
+    disptach(addtocart("")); // Make sure the action creator and reducer are properly defined
+    Setcount(5); // Reset the countdown value here
+    toast.success("Order placed sucessfully");
+    navigate("/user/history");
+  };
+
   return (
     <>
       <div className="container-fluid">
@@ -107,8 +144,9 @@ const Checkout = () => {
             <div className="row">
               <div className="col-md-5 mt-2">
                 <button
+                  onClick={handleOrderPlaced}
                   className="btn btn-primary"
-                  disabled={!savedaddress || !products.length}
+                  disabled={!savedaddress}
                 >
                   Place Order
                 </button>

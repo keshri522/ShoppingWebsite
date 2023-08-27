@@ -58,7 +58,7 @@ const AllProducts = () => {
         navigate("/");
       }
 
-      console.log(state);
+      // console.log(state);
 
       // Clear the interval
       return () => {
