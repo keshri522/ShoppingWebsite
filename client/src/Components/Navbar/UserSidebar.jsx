@@ -15,11 +15,11 @@ const UserSidebar = () => {
             Password
           </Link>
         </li>
-        <li className="nav-item">
+        {/* <li className="nav-item">
           <Link to="/user/wishlist" className="nav-link text-secondary">
             Wishlist
           </Link>
-        </li>
+        </li> */}
       </ul>
     </nav>
   );

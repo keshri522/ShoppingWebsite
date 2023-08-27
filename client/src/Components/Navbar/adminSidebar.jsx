@@ -40,11 +40,11 @@ const AdminSidebar = () => (
         </Link>
       </li>
 
-      <li className="nav-item">
+      {/* <li className="nav-item">
         <Link to="/user/password" className="nav-link text-secondary">
           Password
         </Link>
-      </li>
+      </li> */}
     </ul>
   </nav>
 );

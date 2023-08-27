@@ -69,4 +69,21 @@ const UserAddress = async (address, token) => {
     throw error; // Re-throw the error to be caught in the calling code
   }
 };
-export { Getusercart, UserCartData, EmptyCart, UserAddress };
+// this function will return all the or get all the carts items
+const GetallCarts = async (token) => {
+  try {
+    const response = await axios.get(
+      `${process.env.REACT_APP_ROUTE_API}/user/allcart`,
+
+      {
+        headers: {
+          token: token,
+        },
+      }
+    );
+    return response; // Return the response data from the promise
+  } catch (error) {
+    throw error; // Re-throw the error to be caught in the calling code
+  }
+};
+export { Getusercart, UserCartData, EmptyCart, UserAddress, GetallCarts };

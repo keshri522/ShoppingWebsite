@@ -33,7 +33,7 @@ const Userhistory = () => {
   // donwload pdf usingvthis functin
   const showDownloadLink = () => (
     <PDFDownloadLink
-      document={<Invoice products={products}></Invoice>}
+      document={<Invoice></Invoice>}
       fileName="invoice.pdf"
       className="btn btn-sm btn-block btn-outline-primary"
     >

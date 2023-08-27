@@ -36,7 +36,7 @@ const Login = () => {
     } else if (data.data.role === "admin") {
       navigate("/admin/dashboard");
     } else {
-      navigate("/user/dashboard");
+      navigate("/");
     }
   };
   // this will run when we refresh or mount the page.

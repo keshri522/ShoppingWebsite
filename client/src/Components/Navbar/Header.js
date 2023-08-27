@@ -68,6 +68,20 @@ const Header = () => {
             Home
           </Link>
         </Item>
+        {(!userData || userData.role === "subscriber") && (
+          <Item key="Password" icon={<ShoppingOutlined />}>
+            <Link to="/user/password" style={linkStyle}>
+              Password
+            </Link>
+          </Item>
+        )}
+        {(!userData || userData.role === "subscriber") && (
+          <Item key="Password" icon={<ShoppingOutlined />}>
+            <Link to="/user/history" style={linkStyle}>
+              History
+            </Link>
+          </Item>
+        )}
         {/* this will show only there are no user means home page or if user===not admin */}
         {(!userData || userData.role === "subscriber") && (
           <Item key="Shop" icon={<ShoppingOutlined />}>

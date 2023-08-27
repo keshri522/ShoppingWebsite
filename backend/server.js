@@ -15,6 +15,8 @@ const subscategory = require("./routes/subcategory");
 const Product = require("./routes/product");
 const uploadImage = require("./routes/cloudinary");
 const UserRoute = require("./routes/user");
+const GetCart = require("./routes/user");
+
 // import the Database connection function and run;
 DatabaseConnection();
 // middlewares
@@ -23,7 +25,7 @@ app.use(bodyParser.json({ limit: "5mb" })); // increase the size if data is bigg
 app.use(morgan("tiny")); // printing the url or in the console or request.
 app.use(cors());
 // using Routes with middleware..
-app.use("/api", AuthRoute, Category, Product, UserRoute); // means AuthRoute will access only if we go to by /api first.this middleware does
+app.use("/api", AuthRoute, Category, Product, UserRoute, GetCart); // means AuthRoute will access only if we go to by /api first.this middleware does
 app.use("/user", user); //access only first you got user/then .
 app.use("/api", subscategory, uploadImage);
 // app.use("/route", Category); // access by Category routes

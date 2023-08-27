@@ -3,7 +3,9 @@ import AdminSidebar from "../Navbar/adminSidebar";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import axios from "axios";
-
+import { GetallCarts } from "../functions/User";
+import Orders from "../pages/auth/order";
+import { toast } from "react-toastify";
 const AdminDashBoard = () => {
   const navigate = useNavigate();
 
@@ -19,7 +21,7 @@ const AdminDashBoard = () => {
   useEffect(() => {
     setstate(false);
     if (user && user.token) {
-      console.log(state);
+      // console.log(state);
       const config = {
         headers: {
           "Content-type": "application/json",
@@ -33,9 +35,9 @@ const AdminDashBoard = () => {
           config // 3rd one is passed in the headers
         )
         .then((data) => {
-          console.log("Admin data response is", data);
+          // console.log("Admin data response is", data);
           setstate(false);
-          console.log(state);
+          // console.log(state);
         })
         .catch((error) => {
           console.log("Admin route error", error);
@@ -54,7 +56,7 @@ const AdminDashBoard = () => {
         navigate("/");
       }
 
-      console.log(state);
+      // console.log(state);
 
       // Clear the interval
       return () => {
@@ -63,27 +65,45 @@ const AdminDashBoard = () => {
       };
     }
   }, [user, count, navigate, state]);
+  // calling this function to get all the cart
+  useEffect(() => {
+    Setloading(true);
+    if (user && user.token) {
+      GetallCarts(user.token)
+        .then((res) => {
+          SetgetProduct(res.data);
+          // console.log(res.data);
+          Setloading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          toast.error(err.message);
+        });
+    }
+  }, [user]);
 
   return (
     <div className="container-fluid">
       <div className="row">
-        <div className="col">
-          <div className="col-md-2">
-            {user && user.role === "admin" && <AdminSidebar></AdminSidebar>}
-          </div>
-          {state ? (
-            <div className="mt-5">
-              <h4 className="text-center text-secondary">
-                Redirecting to home page {count}
-              </h4>
-              <h3 className="text-center text-danger">
-                Sorry Only Admin can access this route
-              </h3>
-            </div>
-          ) : (
-            <h1 className="text-center">Admin Dashboard</h1>
-          )}
+        <div className="col-md-2">
+          {user && user.role === "admin" && <AdminSidebar></AdminSidebar>}
         </div>
+        {state ? (
+          <div className="mt-5">
+            <h4 className="text-center text-secondary">
+              Redirecting to home page {count}
+            </h4>
+            <h3 className="text-center text-danger">
+              Sorry Only Admin can access this route
+            </h3>
+          </div>
+        ) : (
+          <div className="col-md-8 mt-5">
+            <h4 className="text-primary text-center mb-3">Admin Dashboard</h4>
+            {/* {JSON.stringify(orders)} */}
+            <Orders orders={getProduct} />
+          </div>
+        )}
       </div>
     </div>
   );

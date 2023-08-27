@@ -7,8 +7,10 @@ const {
   getuserCart,
   removeusercart,
   addressSave,
+  AllCartitmes,
 } = require("../controllers/user"); // this is function coming from controllers.
 // routes
+router.get("/user/allcart", authMiddleware, AllCartitmes);
 router.get("/user/cart", authMiddleware, getuserCart); // get all the cart from db
 router.post("/user/cart", authMiddleware, userCart); // saving all the data of cartto db
 router.delete("/user/cart", authMiddleware, removeusercart); // delete all the cart from db

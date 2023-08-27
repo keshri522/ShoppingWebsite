@@ -167,7 +167,7 @@ const ProductCreate = () => {
               </h3>
             </div>
           ) : (
-            <h3 className="text-center text-primary "> Product page</h3>
+            <h3 className="text-center text-primary ">Product Creation Page</h3>
           )}
           {user && user.token ? (
             <FileUpload

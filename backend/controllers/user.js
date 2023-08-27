@@ -169,5 +169,33 @@ const addressSave = async (req, res) => {
     console.log(error);
   }
 };
+// this api will  return or give all the carts items.
+const AllCartitmes = async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.user.email }).exec();
 
-module.exports = { getuserCart, userCart, removeusercart, addressSave };
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    let cart = await Cart.find({})
+      .populate("products.product", "_id title price totalAfterDiscount")
+      .exec();
+
+    if (!cart) {
+      return res.status(404).json({ error: "Cart not found" });
+    }
+
+    res.json(cart);
+  } catch (error) {
+    res.status(500).json({ error: "An error occurred" });
+  }
+};
+
+module.exports = {
+  getuserCart,
+  userCart,
+  removeusercart,
+  addressSave,
+  AllCartitmes,
+};

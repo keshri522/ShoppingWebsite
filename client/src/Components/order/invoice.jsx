@@ -8,7 +8,7 @@ import {
   DataTableCell,
 } from "@david.kucsai/react-pdf-table";
 
-const Invoice = ({ order }) => (
+const Invoice = () => (
   <Document>
     <Page style={styles.body}>
       <Text style={styles.header} fixed>
@@ -28,7 +28,7 @@ const Invoice = ({ order }) => (
         </TableHeader>
       </Table>
 
-      <Table data={order.products}>
+      {/* <Table data={order.product}>
         <TableBody>
           <DataTableCell getContent={(x) => x.product.title} />
           <DataTableCell getContent={(x) => `$${x.product.price}`} />
@@ -36,7 +36,7 @@ const Invoice = ({ order }) => (
           <DataTableCell getContent={(x) => x.product.brand} />
           <DataTableCell getContent={(x) => x.product.color} />
         </TableBody>
-      </Table>
+      </Table> */}
 
       <Text style={styles.footer}> ~ Thank you for shopping with us ~ </Text>
     </Page>
