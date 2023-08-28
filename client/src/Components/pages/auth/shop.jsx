@@ -40,27 +40,47 @@ const Shop = () => {
   const [categoryIds, SetcategoryIds] = useState([]); // this is array of category id when user checked on checkbox
   // using useffect to show all the products based on the count
   // 1 load default products
+
   useEffect(() => {
     Getproduct();
+    getsubcategory().then((res) => {
+      Setsubcategory(res.data);
+    });
+    // find all the category
+    getCategory().then((res) => Setcategory(res.data));
   }, []);
   const Getproduct = () => {
     Setloading(true);
     getProductList(50).then((res) => {
-      Setproduct(res.data);
-      Setloading(false);
+      if (res.status === 200) {
+        // console.log(res);
+        Setproduct(res.data);
+        Setloading(false);
+      }
     });
   };
   //  2 search the product
   // making reqquest to the backend based on the data coming from redux store..
-  useEffect(() => {
-    // to make a delay of some seconds we use settimeout
-    const delayed = setTimeout(() => {
-      fetchProducts({ query: SearchQuery.text });
-    }, 400);
+  // useEffect(() => {
+  //   // to make a delay of some seconds we use settimeout
+  //   const delayed = setTimeout(() => {
+  //     fetchProducts({ query: SearchQuery.text });
+  //   }, 400);
 
-    // clearing the time interval once it is completed
-    return () => clearInterval(delayed);
+  //   // clearing the time interval once it is completed
+  //   return () => clearInterval(delayed);
+  // }, [SearchQuery.text]);
+  useEffect(() => {
+    if (SearchQuery.text) {
+      const delayed = setTimeout(() => {
+        fetchProducts({ query: SearchQuery.text });
+      }, 400);
+
+      // Clear the timeout when the component unmounts or when SearchQuery.text changes
+      return () => clearTimeout(delayed);
+    }
   }, [SearchQuery.text]);
+
   // this function will give the  products based on the search on input
   const fetchProducts = (arg) => {
     Setloading(true);
@@ -80,28 +100,26 @@ const Shop = () => {
 
   // 3 search or filter the products based on price
   useEffect(() => {
-    loadPrice({ price: price });
-    // this is for subcategory to get all subcateogry
-    getsubcategory().then((res) => {
-      Setsubcategory(res.data);
-    });
-    // find all the category
-    getCategory().then((res) => Setcategory(res.data));
+    loadPrice({ price });
   }, [ok]);
+
   const loadPrice = (arg) => {
-    Setloading(true);
-    fetchSearch(arg).then((res) => {
-      Setproduct(res.data);
-      Setloading(false);
-    });
+    // Check if the price is greater than [0, 0] before making the API call
+    if (price[0] > 0 || price[1] > 0) {
+      Setloading(true);
+      fetchSearch(arg).then((res) => {
+        Setproduct(res.data);
+        Setloading(false);
+      });
+    }
   };
+
   // function for
   const handleSlider = (value) => {
     // first we need to remove the previos redux store to empty
     dispatch(searchQuery({ text: "" }));
     // clear the check box
     SetcategoryIds([]);
-
     Setprice(value);
     //delaying
     setTimeout(() => {
@@ -111,8 +129,12 @@ const Shop = () => {
   //  4 load product based on the category
   // view all the category based on checkbox
   useEffect(() => {
+    if (category && category.length > 0) {
+      fetchSearch({ category: categoryIds }).then((res) =>
+        Setproduct(res.data)
+      );
+    }
     // call the function to pass the id of category
-    fetchSearch({ category: categoryIds }).then((res) => Setproduct(res.data));
   }, [categoryIds]);
   // this function will show all the categories in the slider
   const ShowCategories = () =>
@@ -175,7 +197,9 @@ const Shop = () => {
     Setbrand("");
   };
   useEffect(() => {
-    fetchSearch({ Subcatergory: sub }).then((res) => Setproduct(res.data));
+    if (subcategory && subcategory.length > 0) {
+      fetchSearch({ Subcatergory: sub }).then((res) => Setproduct(res.data));
+    }
   }, [sub]);
 
   // this is for the colors
@@ -204,9 +228,11 @@ const Shop = () => {
   };
   // using useffect to make the requrest to backend whenever our brand changes
   useEffect(() => {
-    fetchSearch({ brand: brand }).then((res) => {
-      Setproduct(res.data);
-    });
+    if (brand) {
+      fetchSearch({ brand: brand }).then((res) => {
+        Setproduct(res.data);
+      });
+    }
   }, [brand]);
   // this is for the colors
   const ShowColros = () =>
@@ -236,8 +262,11 @@ const Shop = () => {
   };
   // make a request to the color value
   useEffect(() => {
-    fetchSearch({ color: color }).then((res) => Setproduct(res.data));
-  }, [color]); // when ever the color change useeffect run
+    if (color) {
+      fetchSearch({ color: color }).then((res) => Setproduct(res.data));
+    }
+  }, [color]);
+
   return (
     <>
       <div className="container-fluid">
@@ -295,7 +324,7 @@ const Shop = () => {
               </SubMenu>
               {/* this is for the colors */}
               <SubMenu
-                key="4"
+                key="5"
                 title={<span className="h6 mt-2 text-primary">Colors</span>}
               >
                 <div>{ShowColros()}</div>
@@ -319,7 +348,7 @@ const Shop = () => {
               </>
             ) : ( */}
             <div className="row pb-5">
-              {product.map((item) => (
+              {product?.map((item) => (
                 <div className="col-md-4 mt-3" key={item._id}>
                   <SingleProduct product={item}></SingleProduct>
                 </div>

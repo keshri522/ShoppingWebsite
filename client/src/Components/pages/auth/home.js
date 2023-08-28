@@ -24,7 +24,9 @@ const Home = () => {
   // this will give the total number of products present in db
   useEffect(() => {
     getTotalProduct().then((res) => {
-      SettotalProduct(res.data);
+      if (res.status) {
+        SettotalProduct(res.data);
+      }
     });
   }, []);
 
@@ -33,14 +35,19 @@ const Home = () => {
     Setloading(true);
     getPaginationProducts("createdAt", "desc", page)
       .then((res) => {
+        if (res.status === 200) {
+          Setallproducts(res.data);
+          Setloading(false);
+        }
         // console.log(res);
-        Setallproducts(res.data);
-        Setloading(false);
       })
       .catch((err) => {
         // console.log(err);
         Setloading(false);
       });
+  };
+  const handlePageChange = (newPage) => {
+    Setpage(newPage);
   };
 
   return (
@@ -81,7 +88,7 @@ const Home = () => {
       <Pagination
         current={page}
         total={Math.ceil(totalProuct / 6) * 10}
-        onChange={(value) => Setpage(value)}
+        onChange={handlePageChange}
         className="text-center p-3 mb-5"
       ></Pagination>
 
