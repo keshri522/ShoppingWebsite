@@ -27,14 +27,18 @@ const Categorylist = () => {
   // this function will all the categories that admin had created
   const ShowAllCategories = () =>
     categorylist?.map((item) => (
-      <div className="col-md-3">
+      <div className=" col-6 col-md-3 ">
         <Link to={`/category/${item.slug}`} style={{ textDecoration: "none" }}>
-          <div key={item._id} className="btn btn-info m-3 btn-md btn-block">
+          <div
+            key={item._id}
+            className="btn  btn-secondary  m-3 btn-sm btn-block"
+          >
             {item.name}
           </div>
         </Link>
       </div>
     ));
+
   return (
     <div>
       <div className="container">

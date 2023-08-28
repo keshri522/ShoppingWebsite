@@ -92,7 +92,11 @@ const Home = () => {
         className="text-center p-3 mb-5"
       ></Pagination>
 
-      <h4 className="text-center text-primary jumbotron p-3 ">Categories</h4>
+      {/* <h4 className="text-center text-primary jumbotron p-3 ">Categories</h4>
+      <Categorylist></Categorylist> */}
+
+      <h4 className="text-center text-primary jumbotron p-3">Categories</h4>
+
       <Categorylist></Categorylist>
 
       <h4 className="text-center text-primary jumbotron p-3 ">Subcategories</h4>

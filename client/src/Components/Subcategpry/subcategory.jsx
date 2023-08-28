@@ -28,12 +28,15 @@ const Subcategorylist = () => {
   // this function will all the categories that admin had created
   const ShowAllSubCategories = () =>
     subcategorylist?.map((item) => (
-      <div className="col-md-3">
+      <div className="col-6 col-md-3 ">
         <Link
           to={`/subcategory/${item.slug}`}
           style={{ textDecoration: "none" }}
         >
-          <div key={item._id} className="btn btn-info m-3 btn-md btn-block">
+          <div
+            key={item._id}
+            className="btn  btn-secondary  m-3 btn-sm btn-block"
+          >
             {item.name}
           </div>
         </Link>
