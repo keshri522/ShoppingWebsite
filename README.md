@@ -34,8 +34,9 @@ Access your cart anytime to review your selected items, update quantities, or re
 
 Shop with confidence on our e-commerce platform, where we prioritize user satisfaction, security, and a delightful shopping experience. Discover, select, and purchase your favorite products hassle-free. Happy shopping!
 
-
-
+## for testing:
+- userrkeshri522@gmail.com
+- password:123456789a@
 
 ## Features
 - Login page
