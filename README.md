@@ -38,6 +38,9 @@ Shop with confidence on our e-commerce platform, where we prioritize user satisf
 - user: rkeshri522@gmail.com
 - password:123456789a@
 
+## fir admin who add or delete the products
+- email: nkeshri522@gmail.com
+- password : 123456789a@
 ## Features
 - Login page
 - Register page
